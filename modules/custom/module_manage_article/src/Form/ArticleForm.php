@@ -26,13 +26,23 @@
                 '#default_value'=>'',
                 '#required' => true,
             );
-            $form['main']['image'] = array(
-                '#type' => 'text_format',
-                '#title' => t('image'),
-                '#default_value' => '',
-            );
+            $folder = date('Y-m', time());
+            $form['profile_image'] = [
+                '#type' => 'managed_file',
+                '#title' => t('Add a new file'),
+                '#upload_validators' => [
+                    'file_validate_extensions' => ['gif png jpg jpeg'],
+                    'file_validate_size' => [25600000],
+                ],
+                '#upload_location' => 'public://'.$folder.''
+             ];
+            // $form['image'] = array(
+            //     '#type' => 'file',
+            //     '#title' => t('image'),
+            //     '#default_value' => '',
+            // );
             $form['body_value'] = array(
-                '#type'=>'textarea',
+                '#type'=>'text_format',
                 '#title'=>'Body',
                 '#default_value'=>'',
                 '#required' => true,
@@ -63,21 +73,19 @@
          */
         public function submitForm (array &$form, FormStateInterface $form_state ){
             $postData = $form_state->getValues();
-
-            unset($postData['save'], $postData['form_build_id'], $postData['form_token'], $postData['form_id'], $postData['op']);
             
+           
             $node = Node::create(array(
                 'type' => 'article',
                 'title' => $postData['title'],
-                'body_value' => $postData['body_value'],
                 'langcode' => 'en',
                 'uid' => '1',
                 'status' => 1,
-                'body' => [
-                    'value' => $postData['body_value'],
-                    'format' => 'basic_html',
-                ],
+                'body' => $postData['body_value'],
+                                   
             ));
+            
+
             $node->save();
             
             \Drupal::messenger()->addStatus(t('Article data save successfully!'), 'status',TRUE);

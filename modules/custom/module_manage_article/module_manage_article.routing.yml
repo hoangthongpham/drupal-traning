@@ -1,14 +1,14 @@
 module_manage_article.load:
   path: "/admin/articles"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ModuleManageArticle::load'
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::load'
     _title: "List articles"
   requirements:
     _permission: "admin user"
 module_manage_article.addArticles:
   path: "/admin/article/add"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ModuleManageArticle::addArticles'
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::addArticles'
     # _form: '\Drupal\module_manage_article\Form\ArticleForm'
     _title: "Add articles"
   requirements:
@@ -16,7 +16,7 @@ module_manage_article.addArticles:
 module_manage_article.editArticles:
   path: "/admin/article/edit/{id}"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ModuleManageArticle::editArticles'
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::editArticles'
     # _form: '\Drupal\module_manage_article\Form\EditArticle'
     _title: "Edit articles"
   requirements:
@@ -24,6 +24,6 @@ module_manage_article.editArticles:
 module_manage_article.deleteArticles:
   path: "/admin/article/delete/{id}"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ModuleManageArticle::deleteArticles'
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::deleteArticles'
   requirements:
     _permission: "admin user"
