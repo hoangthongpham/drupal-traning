@@ -7,23 +7,35 @@
     use Drupal\node\Entity\Node;
     use \Drupal\file\Entity\File;
 
-    class ArticleForm extends FormBase {
+    class EditArticleForm extends FormBase {
         /**
          * {@inheritdoc}
          */
         
         public function getFormId(){
-            return 'add_article';
+            return 'edit_article';
         }
 
         /**
          * {@inheritdoc}
          */
         public function buildForm(array $form,FormStateInterface $form_state ){
+            $nid = \Drupal::routeMatch()->getParameter('id');
+            $node = \Drupal\node\Entity\Node::load($nid);
+            // $title = $node->title->value;
+            // $body = $node->body->value;
+            if($node->get('field_image')->target_id){
+                $file = File::load($node->get('field_image')->target_id);
+                // $image_name= $file->filename->value;
+                $field_image =  $file->fid->value;
+            }else{
+                $field_image='';
+            }
+           
             $form['title'] = array(
                 '#type'=>'textfield',
                 '#title'=>t('Title'),
-                '#default_value'=>'',
+                '#default_value'=> $node->title->value,
                 '#required' => true,
             );
             $folder = date('Y-m', time());
@@ -34,17 +46,18 @@
                     'file_validate_extensions' => ['gif png jpg jpeg'],
                     'file_validate_size' => [25600000],
                 ],
-                '#upload_location' => 'public://'.$folder.''
+                '#upload_location' => 'public://'.$folder.'',
+                '#default_value'=>[$field_image],
              ];
             $form['body_value'] = array(
                 '#type'=>'text_format',
                 '#title'=>'Body',
-                '#default_value'=>'',
+                '#default_value'=>$node->body->value,
                 '#required' => true,
             );
             $form['save'] = array(
                 '#type'=>'submit',
-                '#value'=>'Save',
+                '#value'=>'update',
                 '#button_type'=> 'primary'
             );
             return $form;
@@ -72,22 +85,17 @@
             }else{
                 $fileId=null;
             }
-            $node = Node::create(array(
-                'type' => 'article',
-                'title' => $postData['title'],
-                'langcode' => 'en',
-                'uid' => '1',
-                'status' => 1,
-                'body' => $postData['body_value'],
-                'field_image'=>[
-                    'target_id' => $fileId,
-                    'alt'=>'',
-                    'title'=>''
-                ]                       
-            ));        
+            $nid = \Drupal::routeMatch()->getParameter('id');
+            $node = \Drupal\node\Entity\Node::load($nid);
+             
+            $node->title = $postData['title'];
+            $node->body = $postData['body_value'];
+            $node->field_image = $fileId;
             $node->save();
+
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
-            $response->send();
+            $response->send(); 
+             
             \Drupal::messenger()->addStatus(t('Article data save successfully!'), 'status',TRUE);
         }
 
