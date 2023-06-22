@@ -47,7 +47,12 @@
                 '#required' => true,
             );
             $folder = date('Y-m', time());
-            $form['field_image'] = [
+            $form['image'] = array(
+                '#type' => 'details',
+                '#title' => t('Image'),
+                '#open' => TRUE,
+            );
+            $form['image']['field_image'] = [
                 '#type' => 'managed_file',
                 '#title' => t('Add a new file'),
                 '#upload_validators' => [

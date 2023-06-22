@@ -26,15 +26,21 @@
                 '#required' => true,
             );
             $folder = date('Y-m', time());
-            $form['field_image'] = [
+            $form['image'] = array(
+                '#type' => 'details',
+                '#title' => t('Image'),
+                '#open' => TRUE,
+            );
+            $form['image']['field_image'] = [
                 '#type' => 'managed_file',
                 '#title' => t('Add a new file'),
                 '#upload_validators' => [
                     'file_validate_extensions' => ['gif png jpg jpeg'],
                     'file_validate_size' => [25600000],
                 ],
-                '#upload_location' => 'public://'.$folder.''
-             ];
+                '#upload_location' => 'public://'.$folder.'',
+            ];
+
             $form['body_value'] = array(
                 '#type'=>'text_format',
                 '#title'=>'Body',
@@ -46,24 +52,18 @@
                 '#title'=>'Tags',
                 '#default_value'=>'',
                 '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
-                '#required' => true,
             );
             $form['status'] = array(
                 '#type'=>'checkbox',
                 '#title' => t('Published'),
-                '#default_value'=>'',
+                '#default_value'=>1,
             );
 
             $form['save'] = array(
                 '#type'=>'submit',
                 '#value'=>'Save',
                 '#button_type'=> 'primary'
-            );
-            $form['preview'] = array(
-                '#type'=>'submit',
-                '#value'=>'Preview',
-                '#button_type'=> 'warning'
-            );     
+            );  
             return $form;
 
         }
@@ -75,7 +75,7 @@
             if(trim($title) == ''){
                 $form_state->setErrorByName('title',$this->t('Title field is required'));
             }
-            elseif($form_state->getValue('body_value') ==0){
+            elseif($form_state->getValue('body_value') ==''){
                 $form_state->setErrorByName('body_value',$this->t('Body field is required'));
             }
         }

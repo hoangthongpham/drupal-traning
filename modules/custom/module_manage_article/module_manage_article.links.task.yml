@@ -1,0 +1,17 @@
+# module_manage_article.editArticles:
+#   route_name: module_manage_article.editArticles
+#   title: 'list'
+#   base_route: module_manage_article.editArticles
+#   weight: 5
+
+# entity.node.delete_form:
+#   route_name: module_manage_article.deleteArticles
+#   base_route: module_manage_article.deleteArticles
+#   title: Delete
+#   weight: 5
+
+module_manage_article.ArticleForm:
+  route_name : module_manage_article.ArticleForm
+  title: add
+  base_route: module_manage_article.ArticleForm
+  weight: 10

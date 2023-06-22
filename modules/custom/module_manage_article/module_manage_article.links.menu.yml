@@ -17,3 +17,5 @@ module_manage_article.addArticles:
   options:
     attributes:
       # target: _blank
+
+  
