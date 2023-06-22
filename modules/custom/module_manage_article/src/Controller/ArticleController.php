@@ -85,6 +85,10 @@ class ArticleController {
     if ($node) {
       $node->delete();
     }
+    $termId = $node->get('field_tags')->target_id;
+    if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
+      $term->delete();
+    }
     \Drupal::messenger()->addStatus(t('Article delete successfully!'), 'success',TRUE);
     return 
       $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');

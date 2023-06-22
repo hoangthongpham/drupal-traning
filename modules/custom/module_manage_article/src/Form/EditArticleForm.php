@@ -6,6 +6,7 @@
     use Drupal\Core\Entity\ContentEntityForm;
     use Drupal\node\Entity\Node;
     use \Drupal\file\Entity\File;
+    use Drupal\taxonomy\Entity\Term;
 
     class EditArticleForm extends FormBase {
         /**
@@ -22,14 +23,21 @@
         public function buildForm(array $form,FormStateInterface $form_state ){
             $nid = \Drupal::routeMatch()->getParameter('id');
             $node = \Drupal\node\Entity\Node::load($nid);
-            // $title = $node->title->value;
-            // $body = $node->body->value;
             if($node->get('field_image')->target_id){
                 $file = File::load($node->get('field_image')->target_id);
                 // $image_name= $file->filename->value;
                 $field_image =  $file->fid->value;
             }else{
                 $field_image='';
+            }
+
+            $termId = $node->get('field_tags')->target_id;
+        
+            $term = Term::load($termId);
+            if($term){
+                $name_tag = $term->name->value;
+            }else{
+                $name_tag = '';
             }
            
             $form['title'] = array(
@@ -55,6 +63,18 @@
                 '#default_value'=>$node->body->value,
                 '#required' => true,
             );
+            $form['field_tags'] = array(
+                '#type'=>'textfield',
+                '#title'=>'tags',
+                '#default_value'=>$name_tag,
+                '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
+                '#required' => true,
+            );
+            $form['status'] = array(
+                '#type'=>'checkbox',
+                '#title' => t('Published'),
+                '#default_value'=>$node->status->value,
+            );
             $form['save'] = array(
                 '#type'=>'submit',
                 '#value'=>'update',
@@ -71,7 +91,7 @@
             if(trim($title) == ''){
                 $form_state->setErrorByName('title',$this->t('Title field is required'));
             }
-            elseif($form_state->getValue('body_value') ==0){
+            elseif($form_state->getValue('body_value') ==''){
                 $form_state->setErrorByName('body_value',$this->t('Body field is required'));
             }
         }
@@ -87,11 +107,16 @@
             }
             $nid = \Drupal::routeMatch()->getParameter('id');
             $node = \Drupal\node\Entity\Node::load($nid);
+            $termId = $node->get('field_tags')->target_id;
+            $term = Term::load($termId);
+            $term->name->setValue($postData['field_tags']);
+            $term->Save();
              
             $node->title = $postData['title'];
             $node->body = $postData['body_value'];
             $node->field_image = $fileId;
             $node->save();
+
 
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send(); 

@@ -6,7 +6,7 @@ module_manage_article.load:
   menu_name: main
   options:
     attributes:
-      target: _blank
+      # target: _blank
 
 module_manage_article.addArticles:
   title: Add articles
@@ -16,4 +16,4 @@ module_manage_article.addArticles:
   menu_name: main
   options:
     attributes:
-      target: _blank
+      # target: _blank

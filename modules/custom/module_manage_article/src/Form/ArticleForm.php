@@ -2,11 +2,10 @@
     namespace Drupal\module_manage_article\Form;
     use Drupal\Core\Form\FormBase;
     use Drupal\Core\Form\FormStateInterface;
-    use Drupal\Code\Database\Database;
-    use Drupal\Core\Entity\ContentEntityForm;
     use Drupal\node\Entity\Node;
-    use \Drupal\file\Entity\File;
-
+    use Drupal\taxonomy\Entity\Term;
+    use Drupal\menu_link_content\Entity\MenuLinkContent;
+    
     class ArticleForm extends FormBase {
         /**
          * {@inheritdoc}
@@ -42,11 +41,29 @@
                 '#default_value'=>'',
                 '#required' => true,
             );
+            $form['field_tags'] = array(
+                '#type'=>'textfield',
+                '#title'=>'Tags',
+                '#default_value'=>'',
+                '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
+                '#required' => true,
+            );
+            $form['status'] = array(
+                '#type'=>'checkbox',
+                '#title' => t('Published'),
+                '#default_value'=>'',
+            );
+
             $form['save'] = array(
                 '#type'=>'submit',
                 '#value'=>'Save',
                 '#button_type'=> 'primary'
             );
+            $form['preview'] = array(
+                '#type'=>'submit',
+                '#value'=>'Preview',
+                '#button_type'=> 'warning'
+            );     
             return $form;
 
         }
@@ -67,11 +84,19 @@
          */
         public function submitForm (array &$form, FormStateInterface $form_state ){
             $postData = $form_state->getValues();
+            // echo'<pre>';
+            // print_r($postData);exit;
             if($postData['field_image']){
                 $fileId = $postData['field_image'][0]; 
             }else{
                 $fileId=null;
             }
+            $new_term = Term::create([
+                'vid' => 'tags',
+                'name' => $postData['field_tags'],
+            ]);
+            $new_term->enforceIsNew();
+            $new_term->save();
             $node = Node::create(array(
                 'type' => 'article',
                 'title' => $postData['title'],
@@ -83,8 +108,13 @@
                     'target_id' => $fileId,
                     'alt'=>'',
                     'title'=>''
-                ]                       
-            ));        
+                ],
+                'field_tags'=>[
+                    'target_id'=>$new_term->tid->value
+                ],
+                'status'=>$postData['status'],
+                 
+            ));       
             $node->save();
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send();
