@@ -1,0 +1,16 @@
+{% if data %}
+<table>
+    <th>#</th>
+    <th>Title</th>
+    <th>Body</th>
+    <th>Action</th>
+    {% for item in data %}
+        <tr>
+            <td>{{ item.serial_no }}</td>
+            <td>{{ item.title }}</td>
+            <td>{{ item.body_value }}</td>
+            <td>{{ item.edit }} || {{ item.delete }}</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endif %}

@@ -2,9 +2,9 @@
     function module_manage_article_theme(){
         return array(
             'module_manage_article'=>array(
+                'template' => 'list',
                 'variables'=>array(
-                    't'=>[],
-                    'title'=>''
+                    'data' => []
                 )
             )
         );

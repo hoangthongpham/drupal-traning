@@ -119,6 +119,8 @@
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send();
             \Drupal::messenger()->addStatus(t('Article data save successfully!'), 'status',TRUE);
+
+
         }
 
     }
