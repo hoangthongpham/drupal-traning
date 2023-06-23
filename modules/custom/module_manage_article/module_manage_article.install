@@ -1,17 +1,26 @@
 <?php 
 use Drupal\menu_link_content\Entity\MenuLinkContent;
-$items = array(
-  '78' => 'test1',
-  '84' => 'test2',
-  '85' => 'test3'
-);
+// $items = array(
+//   '78' => 'test1',
+//   '84' => 'test2',
+//   '85' => 'test3'
+// );
 
-foreach($items as $nid => $title) {
-  $menu_link = MenuLinkContent::create([
-    'title' => $title,
-    'link' => ['uri' => 'internal:/node/' . $nid],
-    'menu_name' => 'main',
-    'expanded' => TRUE,
-  ]);
-  $menu_link->save();
-}
+// foreach($items as $nid => $title) {
+//   $menu_link = MenuLinkContent::create([
+//     'title' => $title,
+//     'link' => ['uri' => 'internal:/node/' . $nid],
+//     'menu_name' => 'main',
+//     'expanded' => TRUE,
+//   ]);
+//   $menu_link->save();
+// }
+$menu_link = MenuLinkContent::create([
+  'title' => 'list',
+  'link' => ['uri' => 'entity:node/1'],
+  'menu_name' => 'main',
+  'weight'=>2
+]);
+$menu_link->save();
+
+
