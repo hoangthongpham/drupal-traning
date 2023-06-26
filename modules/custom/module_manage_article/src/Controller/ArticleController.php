@@ -31,10 +31,11 @@ class ArticleController extends ControllerBase {
                 'serial_no'  => $key + 1 . '.',
                 'title'      => $row->title,
                 'body_value' => $row->body_value,
-                'edit'       => t("<a  href='/admin/article/edit/{$row->nid}'>Edit</a>"),
-                'delete'     => t("<a class ='delete_item' data-id ='{$row->nid}'  href='/admin/article/delete/{$row->nid}'>Delete</a>")
+                'edit'       => "<a href='/admin/article/edit/{$row->nid}'>" . $this->t('Edit') . "</a>",
+                'delete'     => "<a class='delete_item' data-id='{$row->nid}' href='/admin/article/delete/{$row->nid}'>" . $this->t('Delete') . "</a>"
             ];
         }
+        
         $response = new JsonResponse([
             'recordsTotal'    => intval($result[1]),
             'recordsFiltered' => intval($result[1]),

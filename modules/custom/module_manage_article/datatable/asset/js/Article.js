@@ -1,4 +1,10 @@
 $(document).ready(function() {
+    var http = window.location.href;
+    if(http =="http://localhost/vi/admin/articles"){
+        url= '//cdn.datatables.net/plug-ins/1.13.4/i18n/vi.json'
+    }else{
+        url='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
+    }
     var table =$('#listTable').DataTable({
         processing: true,
         serverSide: true,
@@ -10,9 +16,6 @@ $(document).ready(function() {
         ajax: {
             url: '/admin/get-list',
             dataType: 'json',
-            // dataSrc: function ( json ) {
-            //     return json.data
-            // }
         },
         aoColumns: [
             { data: 'serial_no'},
@@ -49,7 +52,10 @@ $(document).ready(function() {
                 data: "action",
                 targets: 3,
             }
-        ]
+        ],
+        language: {
+            url: url,
+        },
     });
 
     $(document).on('click', '#btn_search', function(evt) {
@@ -59,15 +65,10 @@ $(document).ready(function() {
           .draw();
     });
 
-    // $('#search_form').on( 'keyup', function () {
-    //     console.log(this.value);
-    //     table.search( this.value ).draw();
-    // } );
-
     $(document).on('click','.delete_item',function(e){
         e.preventDefault();
         var id = $(this).attr('data-id');
-        var confirmation = confirm('Bạn có chắc chắn muốn xóa loại này?');
+        var confirmation = confirm('Are you sure you want to delete this article?');
         if(confirmation){
             $.ajax({
                 url: '/admin/article/delete/'+id+'',
@@ -76,7 +77,7 @@ $(document).ready(function() {
                 beforeSend: function () {     
                 },
                 success: function (data) {
-                    alert('Xóa Thành Công');
+                    alert('Delete successfully');
                     table.draw();
                 },
                 error: function (data) {

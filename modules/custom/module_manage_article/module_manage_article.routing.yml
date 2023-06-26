@@ -19,7 +19,7 @@ module_manage_article.add:
   path: "/admin/article/add"
   defaults:
     _form: '\Drupal\module_manage_article\Form\ArticleForm'
-    _title: "Add articles"
+    _title:  "Add Article"
   requirements:
     _permission: "admin user"
 
