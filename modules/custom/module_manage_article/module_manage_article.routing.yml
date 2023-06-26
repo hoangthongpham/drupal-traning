@@ -5,22 +5,32 @@ module_manage_article.load:
     _title: "List articles"
   requirements:
     _permission: "admin user"
-module_manage_article.addArticles:
+
+module_manage_article.getList:
+  path: "/admin/get-list"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::getList'
+    _title: "List articles"
+    _format: "json"
+  requirements:
+    _permission: "admin user"
+
+module_manage_article.add:
   path: "/admin/article/add"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ArticleController::addArticles'
-    # _form: '\Drupal\module_manage_article\Form\ArticleForm'
+    _form: '\Drupal\module_manage_article\Form\ArticleForm'
     _title: "Add articles"
   requirements:
     _permission: "admin user"
-module_manage_article.editArticles:
+
+module_manage_article.edit:
   path: "/admin/article/edit/{id}"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ArticleController::editArticles'
-    # _form: '\Drupal\module_manage_article\Form\EditArticle'
+    _form: '\Drupal\module_manage_article\Form\EditArticleForm'
     _title: "Edit articles"
   requirements:
     _permission: "admin user"
+
 module_manage_article.deleteArticles:
   path: "/admin/article/delete/{id}"
   defaults:

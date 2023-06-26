@@ -1,0 +1,13 @@
+datatable_asset:
+  version: 1.13
+  
+  js:
+      datatable/asset/js/jquery-3.5.1.js: {}
+      datatable/asset/js/jquery.dataTables.min.js: {}
+      datatable/asset/js/Article.js: {}
+  css:
+    theme:
+      datatable/asset/css/jquery.dataTables.min.css: {}
+      datatable/asset/css/bootstrap.min.css: {}
+  dependencies:
+  - core/jquery

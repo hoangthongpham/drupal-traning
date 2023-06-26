@@ -1,16 +1,18 @@
-{% if data %}
-<table>
-    <th>#</th>
-    <th>Title</th>
-    <th>Body</th>
-    <th>Action</th>
-    {% for item in data %}
-        <tr>
-            <td>{{ item.serial_no }}</td>
-            <td>{{ item.title }}</td>
-            <td>{{ item.body_value }}</td>
-            <td>{{ item.edit }} || {{ item.delete }}</td>
-        </tr>
-    {% endfor %}
+<div>
+    <label>Tìm kiếm</label>
+    <input class="search" id ="search_form" type="text"></input>
+    <button class="btn_search btn-primary" id="btn_search" type="button">Search</button>
+</div>
+<table id="listTable">
+    <thead>
+        <th>#</th>
+        <th>Title</th>
+        <th>Body</th>
+        <th>Action</th>
+    <thead> 
+    <tbody>
+    </tbody>
+
 </table>
-{% endif %}
+
+
