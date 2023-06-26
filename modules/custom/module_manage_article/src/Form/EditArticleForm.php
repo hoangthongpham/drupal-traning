@@ -42,19 +42,19 @@
            
             $form['title'] = array(
                 '#type'=>'textfield',
-                '#title'=>t('Title'),
+                '#title'=>$this->t('Title'),
                 '#default_value'=> $node->title->value,
                 '#required' => true,
             );
             $folder = date('Y-m', time());
             $form['image'] = array(
                 '#type' => 'details',
-                '#title' => t('Image'),
+                '#title' => $this->t('Image'),
                 '#open' => TRUE,
             );
             $form['image']['field_image'] = [
                 '#type' => 'managed_file',
-                '#title' => t('Add a new file'),
+                '#title' => $this->t('Add a new file'),
                 '#upload_validators' => [
                     'file_validate_extensions' => ['gif png jpg jpeg'],
                     'file_validate_size' => [25600000],
@@ -64,13 +64,13 @@
              ];
             $form['body_value'] = array(
                 '#type'=>'text_format',
-                '#title'=>'Body',
+                '#title'=>$this->t('Body'),
                 '#default_value'=>$node->body->value,
                 '#required' => true,
             );
             $form['field_tags'] = array(
                 '#type'=>'textfield',
-                '#title'=>'tags',
+                '#title'=>$this->t('Tags'),
                 '#default_value'=>$name_tag,
                 '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
                 '#required' => true,

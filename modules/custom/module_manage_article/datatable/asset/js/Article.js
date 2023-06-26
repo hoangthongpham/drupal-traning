@@ -6,7 +6,7 @@ $(document).ready(function() {
         lengthChange:true,
         order:true,
         lengthMenu :[5, 10, 15, 100],
-        pageLength : 5,
+        pageLength :5,
         ajax: {
             url: '/admin/get-list',
             dataType: 'json',
@@ -54,9 +54,8 @@ $(document).ready(function() {
 
     $(document).on('click', '#btn_search', function(evt) {
         var searchValue = $('#search_form').val();
-        console.log(searchValue);
         table
-          .columns(0).search(searchValue)
+          .search(searchValue)
           .draw();
     });
 

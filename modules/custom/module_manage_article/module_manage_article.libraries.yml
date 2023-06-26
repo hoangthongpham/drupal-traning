@@ -4,7 +4,7 @@ datatable_asset:
   js:
       datatable/asset/js/jquery-3.5.1.js: {}
       datatable/asset/js/jquery.dataTables.min.js: {}
-      datatable/asset/js/Article.js: {}
+      datatable/asset/js/article.js: {}
   css:
     theme:
       datatable/asset/css/jquery.dataTables.min.css: {}
