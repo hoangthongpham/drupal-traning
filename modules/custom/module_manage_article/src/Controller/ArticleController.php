@@ -13,7 +13,9 @@ use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Component\HttpFoundation\Request;
 
 
+
 class ArticleController extends ControllerBase {
+  
     public function load(){
         return [
             '#theme' => 'module_manage_article',
@@ -24,15 +26,17 @@ class ArticleController extends ControllerBase {
     }
     public function getList(Request $request) {
         $Mdl = new ArticleModel();
+        // $delete = $this->t('Delete');
+        // $edit = $this->t('Edit');
         $result = $Mdl->getListArticle($request);
         $data = [];
         foreach ($result[0] as $key => $row) {
             $data[] = [
-                'serial_no'  => $key + 1 . '.',
+                'nid'  => $row->nid,
                 'title'      => $row->title,
                 'body_value' => $row->body_value,
-                'edit'       => "<a href='/admin/article/edit/{$row->nid}'>" . $this->t('Edit') . "</a>",
-                'delete'     => "<a class='delete_item' data-id='{$row->nid}' href='/admin/article/delete/{$row->nid}'>" . $this->t('Delete') . "</a>"
+                // 'edit'       => "<a class='edit_item' data-id='{$row->nid}' href='/admin/article/edit/{$row->nid}'>" . $edit . "</a>",
+                // 'delete'     => "<a class='delete_item' data-id='{$row->nid}' href='/admin/article/delete/{$row->nid}'>" . $delete . "</a>"
             ];
         }
         

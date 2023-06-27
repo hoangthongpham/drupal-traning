@@ -51,7 +51,7 @@
                 '#type'=>'textfield',
                 '#title'=>$this->t('Tags'),
                 '#default_value'=>'',
-                '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
+                '#description'=>$this->t('Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" '),
             );
             $form['status'] = array(
                 '#type'=>'checkbox',

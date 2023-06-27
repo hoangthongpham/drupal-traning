@@ -28,8 +28,9 @@ class ArticleModel{
         $query->fields('t', array('title'));
         $query->fields('b', array('body_value','entity_id'));
         $query->condition('n.type', 'article', '=');
-        // $query->orderBy('t.title', $orderDir);
-        $query->orderBy('n.nid', 'asc');
+        if(!empty($orderDir)){
+            $query->orderBy('t.title', $orderDir);
+        }
         if (!empty($searchValue)) {
             $query->condition('t.title', '%' . $connection->escapeLike($searchValue) . '%', 'LIKE');
         }

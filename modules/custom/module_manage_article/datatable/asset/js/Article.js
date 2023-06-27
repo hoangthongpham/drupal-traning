@@ -5,12 +5,13 @@ $(document).ready(function() {
     }else{
         url='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
     }
+   
     var table =$('#listTable').DataTable({
         processing: true,
         serverSide: true,
         searching:true,
         lengthChange:true,
-        order:true,
+        ordering:true,
         lengthMenu :[5, 10, 15, 100],
         pageLength :5,
         ajax: {
@@ -21,7 +22,7 @@ $(document).ready(function() {
             { data: 'serial_no'},
             { data: 'title'},
             { data: 'body_value' },
-            { data: 'action'}
+            { data: Drupal.t('action')}
         ],
         columnDefs:[
             {
@@ -29,6 +30,7 @@ $(document).ready(function() {
                     return meta.row + meta.settings._iDisplayStart + 1;
                 },
                 targets: 0,
+                
             },
             {
                 render: function (data, type, row) {
@@ -45,11 +47,13 @@ $(document).ready(function() {
                 targets: 2,
             },
             {
-                render: function (data, type, row) {
+                render: function (data, type, row) {             
+                        var deleteLink = '<a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a>';
+                        var editLink = '<a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a>';
+                    return deleteLink + ' || ' + editLink;
                     
-                    return row.delete +' || '+ row.edit;
                 },
-                data: "action",
+                data: Drupal.t('action'),
                 targets: 3,
             }
         ],
@@ -68,7 +72,7 @@ $(document).ready(function() {
     $(document).on('click','.delete_item',function(e){
         e.preventDefault();
         var id = $(this).attr('data-id');
-        var confirmation = confirm('Are you sure you want to delete this article?');
+        var confirmation = confirm(Drupal.t('Are you sure you want to delete this article?'));
         if(confirmation){
             $.ajax({
                 url: '/admin/article/delete/'+id+'',
@@ -77,7 +81,7 @@ $(document).ready(function() {
                 beforeSend: function () {     
                 },
                 success: function (data) {
-                    alert('Delete successfully');
+                    alert(Drupal.t('Delete successfully'));
                     table.draw();
                 },
                 error: function (data) {
