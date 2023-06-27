@@ -9,5 +9,6 @@ datatable_asset:
     theme:
       datatable/asset/css/jquery.dataTables.min.css: {}
       datatable/asset/css/bootstrap.min.css: {}
+      datatable/asset/css/style.css: {}
   dependencies:
   - core/jquery

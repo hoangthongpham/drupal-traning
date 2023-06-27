@@ -1,0 +1,23 @@
+#listTable{
+    position: relative;
+    width: 100%;
+}
+#listTable_filter{
+    display: none;
+}
+
+#form_search{
+    position: absolute;
+    right: 100px;
+    z-index: 10000;
+}
+
+.btn-primary {
+    color: #fff;
+    height: 30px;
+    width: 100px;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 5%;
+}
+

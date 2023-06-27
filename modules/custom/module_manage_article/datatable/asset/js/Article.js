@@ -1,11 +1,11 @@
 $(document).ready(function() {
     var http = window.location.href;
     if(http =="http://localhost/vi/admin/articles"){
-        url= '//cdn.datatables.net/plug-ins/1.13.4/i18n/vi.json'
+        url_data= '//cdn.datatables.net/plug-ins/1.13.4/i18n/vi.json'
     }else{
-        url='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
+        url_data='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
     }
-   
+    
     var table =$('#listTable').DataTable({
         processing: true,
         serverSide: true,
@@ -58,8 +58,9 @@ $(document).ready(function() {
             }
         ],
         language: {
-            url: url,
+            url: url_data,
         },
+        
     });
 
     $(document).on('click', '#btn_search', function(evt) {

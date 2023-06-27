@@ -72,7 +72,7 @@
                 '#type'=>'textfield',
                 '#title'=>$this->t('Tags'),
                 '#default_value'=>$name_tag,
-                '#description'=>'Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio" ',
+                '#description'=>$this->t('Enter a comma-separated list. For example: Amsterdam, Mexico City, "Cleveland, Ohio"'),
                 '#required' => true,
             );
             $form['status'] = array(
