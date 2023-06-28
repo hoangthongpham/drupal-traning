@@ -1,3 +1,8 @@
+
+<div>
+    <a id="add_article" href="/admin/article/add">{{ 'Add article'|t }} </a>
+</div>
+
 <div id="form_search">
     <label>{{ 'Search'|t }}</label>
     <input class="search" id ="search_form" type="text"></input>
@@ -5,14 +10,83 @@
 </div>
 <table id="listTable">
     <thead>
-        <th width="5%">#</th>
+        <th width="5%" >#</th>
         <th width="20%">{{ 'Title'|t }}</th>
         <th width="">{{ 'Body'|t }}</th>
-        <th width="8%">{{ 'Action'|t }}</th>
+        <th width="8">{{ 'Status'|t }}</th>
+        <th width="20%" style="text-align:center">{{ 'Action'|t }}</th>
     <thead> 
     <tbody>
     </tbody>
-
 </table>
+
+
+<!-- Modal -->
+<div class="modal edit_modal" id="edit_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Article</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <form class="quickForm" id="quickForm" action="" method="POST">
+        <div class="modal-body">
+              <input type="hidden" class="form-control nid" name="nid" value=""  placeholder=""></input>
+              <div class="form-group mb-3">
+                  <label  class="form-label">{{'Title'|t }}</label>
+                  <input type="text" class="form-control title" name="title" value=""  placeholder=""></input>
+              </div>
+              <div class="form-group mb-3">
+                  <label  class="form-label body_vale">{{ 'Body'|t }}</label>
+                  <textarea type="text"  class="form-control body_value" name="body_value"rows="4" value=""></textarea>
+              </div>
+        </div>
+        <!-- Modal footer -->
+        <div class="modal-footer">
+          <input type="submit" name="submit_modal" id="submit_modal" class="btn btn-primary" value="Update"></input>
+          <button type="button" class="btn btn-danger close" data-dismiss="modal">Close</button>
+        </div>
+      </form>
+
+    </div>
+  </div>
+</div>
+
+
+
+{# <div class="modal view_modal" id="view_modal">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <!-- Modal Header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Edit Article</h4>
+        <button type="button" class="close" data-dismiss="modal">&times;</button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+            <div class="form-group mb-3">
+                <label  class="form-label">{{'Title'|t }}</label>
+                <input type="text" class="form-control title_view" name="title_view" value=""  placeholder=""></input>
+            </div>
+            <div class="form-group mb-3">
+                <label  class="form-label">{{'Image'|t }}</label>
+                <input type="text" class="form-control filed_image" name="filed_image"></input>
+            </div>
+            <div class="form-group mb-3">
+                <label  class="form-label body_vale">{{ 'Body'|t }}</label>
+                <textarea class="form-control body_value_view" name="body_value_view" value="" rows="3"></textarea>
+            </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+        
+      </div>
+
+    </div>
+  </div>
+</div> #}
 
 

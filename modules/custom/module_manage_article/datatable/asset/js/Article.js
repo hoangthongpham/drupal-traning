@@ -6,6 +6,7 @@ $(document).ready(function() {
         url_data='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
     }
     
+    
     var table =$('#listTable').DataTable({
         processing: true,
         serverSide: true,
@@ -22,7 +23,8 @@ $(document).ready(function() {
             { data: 'serial_no'},
             { data: 'title'},
             { data: 'body_value' },
-            { data: Drupal.t('action')}
+            { data: 'status' },
+            { data: Drupal.t('action'), }
         ],
         columnDefs:[
             {
@@ -47,18 +49,43 @@ $(document).ready(function() {
                 targets: 2,
             },
             {
+                render: function (data, type, row) {
+                    if( data ==1){
+                        data = "Active";
+                    }else {
+                        data = "InActive";
+                    }
+                    return data;
+                },
+                data: "status",
+                targets: 3,
+            },
+
+            {
                 render: function (data, type, row) {             
                         var deleteLink = '<a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a>';
                         var editLink = '<a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a>';
-                    return deleteLink + ' || ' + editLink;
+                        var quickEditLink = '<a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a>';
+                        var viewLink = '<a  href="javascript:void(0)/' + row.nid + '" data-toggle="modal" data-target="#view_modal" class="view_article" id="view_article"  data-id='+ row.nid +'>'+Drupal.t('View')+'</a>';
+                    return deleteLink + ' || ' + editLink +' || '+ quickEditLink +' || '+ viewLink;
                     
                 },
                 data: Drupal.t('action'),
-                targets: 3,
+                targets: 4,
             }
         ],
         language: {
-            url: url_data,
+            lengthMenu: ""+Drupal.t('Display')+""+ "_MENU_" + ""+Drupal.t('entries')+"",
+            zeroRecords: ""+Drupal.t('Nothing found - sorry')+"",
+            info:  ""+Drupal.t('Showing')+" _START_ "+Drupal.t('to')+" _END_ "+Drupal.t('of')+" _TOTAL_ "+Drupal.t('entries')+"",
+            infoEmpty: "No records available",
+            infoFiltered: "(filtered from _MAX_ total records)",
+            paginate: {
+                "first":      ""+Drupal.t('First')+"",
+                "last":       ""+Drupal.t('Last')+"",
+                "next":       ""+Drupal.t('Next')+"",
+                "previous":   ""+Drupal.t('Previous page')+""
+            },
         },
         
     });
@@ -90,5 +117,98 @@ $(document).ready(function() {
                 }
             });
         }
-    })   
+    })
+
+    // view article
+    // $(document).on('click','.view_article',function(){
+    //     var nid = $(this).data('id');
+    //     $.ajax({
+    //         type: "GET",
+    //         contentType: "application/json",
+    //         url: "/admin/view/"+nid+"",
+    //         dataType: 'json',
+    //         success: function (res) {
+    //             $('.title_view').val(res.data.title)
+    //             $('.body_value_view').text(res.data.body_value)
+    //         },
+    //         error: function () {
+    //             alert('error');
+    //         }
+    //     }); 
+    // });
+
+    // quick edit
+    $(document).on('click','.quick_edit',function(){
+        var nid = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/admin/quick-edit/"+nid+"",
+            data:{id:nid},
+            dataType: 'json',
+            success: function (res) {
+                $("input[name='nid']").val(res.data.nid)
+                $('.title').val(res.data.title)
+                $('.body_value').val(res.data.body_value)
+            },
+            error: function () {
+                alert('error');
+            }
+        }); 
+    });
+
+    $("#quickForm").validate({
+        rules:{
+            title:{
+                required: true,
+                minlength: 2,
+            },
+            body_value:{
+                required: true,
+            }
+        },
+        highlight: function (element) {
+            $(element).closest('.form-group').addClass('has-error').css('color', 'red');
+        },
+        messages:{
+            title:{
+                required: "This field is required",
+                minlength: "Name must be at least 2 characters",
+            },
+        },
+        submitHandler: function(form) {
+            $.ajax({
+                type: "POST",
+                url: "/admin/update-article",
+                data: $('form.quickForm').serialize(),
+                success: function(response) {
+                    alert('Updated successfully');
+                    table.draw();
+                    $('#edit_modal').modal('hide');
+                },
+                error: function() {
+                    alert('Error');
+                    $('#edit_modal').modal('hide');
+                }
+            });
+        }
+    });
+    // $('#quickForm').submit(function(e){
+    //     e.preventDefault();
+    //     $.ajax({
+    //         type: "POST",
+    //         url: "/admin/update-article",
+    //         data: $('form.quickForm').serialize(),
+    //         success: function(response) {
+    //             alert('Updated successfully');
+    //             table.draw();
+    //             $('#edit_modal').modal('hide');
+    //         },
+    //         error: function() {
+    //             alert('Error');
+    //             $('#edit_modal').modal('hide');
+    //         }
+    //     });
+    // })
+    
 });

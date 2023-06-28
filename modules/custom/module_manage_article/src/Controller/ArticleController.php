@@ -2,7 +2,7 @@
 
 namespace Drupal\module_manage_article\Controller;
 
-
+use Symfony\Component\BrowserKit\Response;
 use Drupal\module_manage_article\Model\ArticleModel;
 use \Drupal\file\Entity\File;
 
@@ -15,7 +15,7 @@ use Symfony\Component\HttpFoundation\Request;
 
 
 class ArticleController extends ControllerBase {
-  
+
     public function load(){
         return [
             '#theme' => 'module_manage_article',
@@ -25,9 +25,8 @@ class ArticleController extends ControllerBase {
         ];
     }
     public function getList(Request $request) {
+        $langcode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         $Mdl = new ArticleModel();
-        // $delete = $this->t('Delete');
-        // $edit = $this->t('Edit');
         $result = $Mdl->getListArticle($request);
         $data = [];
         foreach ($result[0] as $key => $row) {
@@ -35,8 +34,8 @@ class ArticleController extends ControllerBase {
                 'nid'  => $row->nid,
                 'title'      => $row->title,
                 'body_value' => $row->body_value,
-                // 'edit'       => "<a class='edit_item' data-id='{$row->nid}' href='/admin/article/edit/{$row->nid}'>" . $edit . "</a>",
-                // 'delete'     => "<a class='delete_item' data-id='{$row->nid}' href='/admin/article/delete/{$row->nid}'>" . $delete . "</a>"
+                'status' => $row->status,
+                'langcode'=>$langcode,
             ];
         }
         
@@ -51,23 +50,8 @@ class ArticleController extends ControllerBase {
             $response;
             
     }
-    // public function addArticles()
-    // {
-    //     $form = \Drupal::formBuilder()->getForm('Drupal\module_manage_article\Form\ArticleForm');
-    //     return [
-    //         'data' => $form,
-    //     ];
-    // }
-
-    // public function editArticles()
-    // {
-    //     $form = \Drupal::formBuilder()->getForm('Drupal\module_manage_article\Form\EditArticleForm');
-    //     return [
-    //         'data' => $form,
-    //     ];
-    // }
-
-    public function deleteArticles()
+   
+    public function deleteArticle()
     {
         $nid  = \Drupal::routeMatch()->getParameter('id');
         $node = \Drupal\node\Entity\Node::load($nid);
@@ -82,13 +66,42 @@ class ArticleController extends ControllerBase {
         if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
             $term->delete();
         }
-        \Drupal::messenger()->addStatus(t('Article delete successfully!'), 'success', TRUE);
+        \Drupal::messenger()->addStatus($this->t('Article delete successfully!'), 'success', TRUE);
         return
             $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
-        $response->send();;
+        $response->send();
 
     }
-  
+
+    public function showArticle(){
+        $nid = \Drupal::routeMatch()->getParameter('id');
+        $Mdl = new ArticleModel();
+        $data = $Mdl->getArticleByNid($nid);
+        $response = new JsonResponse([     
+            'data'            => $data,
+        ]);
+        return 
+            $response;
+    }
+
+    public function updateArticle(Request $request){
+        $nid = $request->get('nid');
+        $title = $request->get('title');
+        $body = $request->get('body_value');
+        $node = \Drupal\node\Entity\Node::load($nid);
+        $node->title =  $title;
+        $node->body =  $body;
+        $node->save();
+        if($node){
+            $response = new Response('success');
+            return $response;
+        }else {
+            $response = new Response('fail');
+            return  $response;
+        }
+        
+    }
+
 }
 
 

@@ -25,7 +25,6 @@
             $node = \Drupal\node\Entity\Node::load($nid);
             if($node->get('field_image')->target_id){
                 $file = File::load($node->get('field_image')->target_id);
-                // $image_name= $file->filename->value;
                 $field_image =  $file->fid->value;
             }else{
                 $field_image='';
@@ -77,7 +76,7 @@
             );
             $form['status'] = array(
                 '#type'=>'checkbox',
-                '#title' => t('Published'),
+                '#title' => $this->t('Published'),
                 '#default_value'=>$node->status->value,
             );
             $form['save'] = array(
@@ -126,7 +125,7 @@
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send(); 
              
-            \Drupal::messenger()->addStatus(t('Article data save successfully!'), 'status',TRUE);
+            \Drupal::messenger()->addStatus($this->t('Article data save successfully!'), 'status',TRUE);
         }
 
     }

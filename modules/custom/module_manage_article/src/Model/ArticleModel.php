@@ -24,7 +24,7 @@ class ArticleModel{
         $query = $connection->select('node_field_data', 'n');
         $query->leftJoin('node__body', 'b', 'b.entity_id = n.nid');
         $query->leftJoin('node_field_data', 't', 't.nid = n.nid');
-        $query->fields('n', array('nid'));
+        $query->fields('n', array('nid','status'));
         $query->fields('t', array('title'));
         $query->fields('b', array('body_value','entity_id'));
         $query->condition('n.type', 'article', '=');
@@ -44,9 +44,21 @@ class ArticleModel{
             ->fetchField();
         }
         
-    return[
-        $result,$totalItems
-    ];
-    }   
+        return[
+            $result,$totalItems
+        ];
+    }
+    public function getArticleByNid($nid){
+        $connection = \Drupal::database();
+        $query = $connection->select('node_field_data', 'n');
+        $query->leftJoin('node__body', 'b', 'b.entity_id = n.nid');
+        $query->leftJoin('node_field_data', 't', 't.nid = n.nid');
+        $query->fields('t', array('nid','title'));
+        $query->fields('b', array('body_value'));
+        $query->condition('n.nid',$nid, '=');
+        $result = $query->execute()->fetch();
+        return $result;
+
+    }
 
 }

@@ -3,6 +3,9 @@ datatable_asset:
   
   js:
       datatable/asset/js/jquery-3.5.1.js: {}
+      datatable/asset/js/popper.min.js: {}
+      datatable/asset/js/bootstrap.min.js: {}
+      datatable/asset/js/jquery.validate.min.js: {}
       datatable/asset/js/jquery.dataTables.min.js: {}
       datatable/asset/js/article.js: {}
   css:

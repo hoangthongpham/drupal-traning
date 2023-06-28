@@ -14,7 +14,6 @@ module_manage_article.getList:
     _format: "json"
   requirements:
     _permission: "admin user"
-
 module_manage_article.add:
   path: "/admin/article/add"
   defaults:
@@ -31,9 +30,36 @@ module_manage_article.edit:
   requirements:
     _permission: "admin user"
 
-module_manage_article.deleteArticles:
+module_manage_article.deleteArticle:
   path: "/admin/article/delete/{id}"
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\ArticleController::deleteArticles'
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::deleteArticle'
+  requirements:
+    _permission: "admin user"
+
+module_manage_article.showArticle:
+  path: "/admin/quick-edit/{id}"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::showArticle'
+    _title: "Quick Edit"
+    _format: "json"
+  requirements:
+    _permission: "admin user"
+
+module_manage_article.updateArticle:
+  path: "/admin/update-article"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::updateArticle'
+    _title: "Update Article"
+    _format: "json"
+  requirements:
+    _permission: "admin user"
+
+module_manage_article.viewArticle:
+  path: "/admin/view/{id}"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\ArticleController::showArticle'
+    _title: "View article"
+    _format: "json"
   requirements:
     _permission: "admin user"
