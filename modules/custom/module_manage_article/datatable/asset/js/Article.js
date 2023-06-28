@@ -120,22 +120,26 @@ $(document).ready(function() {
     })
 
     // view article
-    // $(document).on('click','.view_article',function(){
-    //     var nid = $(this).data('id');
-    //     $.ajax({
-    //         type: "GET",
-    //         contentType: "application/json",
-    //         url: "/admin/view/"+nid+"",
-    //         dataType: 'json',
-    //         success: function (res) {
-    //             $('.title_view').val(res.data.title)
-    //             $('.body_value_view').text(res.data.body_value)
-    //         },
-    //         error: function () {
-    //             alert('error');
-    //         }
-    //     }); 
-    // });
+    $(document).on('click','.view_article',function(){
+        var nid = $(this).data('id');
+        $.ajax({
+            type: "GET",
+            contentType: "application/json",
+            url: "/admin/view/"+nid+"",
+            dataType: 'json',
+            success: function (res) {
+                var url_image ="/sites/default/files/2023-06/"+res.url+""
+                // var url_image ="/"+res.url+""
+                console.log(url_image)
+                $('.title_view').val(res.data.title)
+                $('.body_value_view').text(res.data.body_value)
+                $('#image').attr("src",url_image)
+            },
+            error: function () {
+                alert('error');
+            }
+        }); 
+    });
 
     // quick edit
     $(document).on('click','.quick_edit',function(){

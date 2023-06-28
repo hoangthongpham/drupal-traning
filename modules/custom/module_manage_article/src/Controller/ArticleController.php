@@ -7,7 +7,7 @@ use Drupal\module_manage_article\Model\ArticleModel;
 use \Drupal\file\Entity\File;
 
 use Drupal\Core\Controller\ControllerBase;
-
+use Drupal\Core\Database\Query\Merge;
 use Symfony\Component\HttpFoundation\JsonResponse;
 
 use Symfony\Component\HttpFoundation\Request;
@@ -77,8 +77,15 @@ class ArticleController extends ControllerBase {
         $nid = \Drupal::routeMatch()->getParameter('id');
         $Mdl = new ArticleModel();
         $data = $Mdl->getArticleByNid($nid);
+        $node = \Drupal\node\Entity\Node::load($nid);
+        if($node->get('field_image')->target_id){
+            $file = File::load($node->get('field_image')->target_id);
+            // $url =  $file->uri->value;
+            $url =  $file->filename->value;
+        }
         $response = new JsonResponse([     
             'data'            => $data,
+            'url' => $url
         ]);
         return 
             $response;
