@@ -17,15 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ArticleController extends ControllerBase {
 
     public function load(){
+        $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         return [
             '#theme' => 'module_manage_article',
             '#attached' => [
                'library' => ['module_manage_article/datatable_asset']
-           ],
+            ],
+            '#langCode' => $langCode
         ];
     }
     public function getList(Request $request) {
-        $langcode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         $Mdl = new ArticleModel();
         $result = $Mdl->getListArticle($request);
         $data = [];
@@ -35,15 +36,15 @@ class ArticleController extends ControllerBase {
                 'title'      => $row->title,
                 'body_value' => $row->body_value,
                 'status' => $row->status,
-                'langcode'=>$langcode,
+                'changed' => $row->changed,
+                'langcode' => $row->langcode,
             ];
         }
-        
+ 
         $response = new JsonResponse([
             'recordsTotal'    => intval($result[1]),
             'recordsFiltered' => intval($result[1]),
-            'data'            => $data,
-    
+            'data'            => $data,  
         ]);
     
         return 
@@ -74,21 +75,20 @@ class ArticleController extends ControllerBase {
     }
 
     public function showArticle(){
-        $nid = \Drupal::routeMatch()->getParameter('id');
-        $Mdl = new ArticleModel();
+        $nid  = \Drupal::routeMatch()->getParameter('id');
+        $Mdl  = new ArticleModel();
         $data = $Mdl->getArticleByNid($nid);
         $node = \Drupal\node\Entity\Node::load($nid);
-        if($node->get('field_image')->target_id){
+        $url  = null;
+        if ($node->get('field_image')->target_id) {
             $file = File::load($node->get('field_image')->target_id);
-            // $url =  $file->uri->value;
-            $url =  $file->filename->value;
-        }
-        $response = new JsonResponse([     
-            'data'            => $data,
-            'url' => $url
+            $url  = \Drupal::service('file_url_generator')->generateAbsoluteString($file->getFileUri());
+        };
+
+        return new JsonResponse([
+            'data' => $data,
+            'url'  => $url
         ]);
-        return 
-            $response;
     }
 
     public function updateArticle(Request $request){

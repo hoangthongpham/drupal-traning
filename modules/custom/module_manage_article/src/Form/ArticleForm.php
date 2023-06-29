@@ -84,8 +84,6 @@
          */
         public function submitForm (array &$form, FormStateInterface $form_state ){
             $postData = $form_state->getValues();
-            // echo'<pre>';
-            // print_r($postData);exit;
             if($postData['field_image']){
                 $fileId = $postData['field_image'][0]; 
             }else{

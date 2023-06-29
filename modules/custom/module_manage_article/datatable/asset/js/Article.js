@@ -1,12 +1,11 @@
 $(document).ready(function() {
+
     var http = window.location.href;
     if(http =="http://localhost/vi/admin/articles"){
         url_data= '//cdn.datatables.net/plug-ins/1.13.4/i18n/vi.json'
     }else{
         url_data='//cdn.datatables.net/plug-ins/1.13.4/i18n/en-GB.json'
     }
-    
-    
     var table =$('#listTable').DataTable({
         processing: true,
         serverSide: true,
@@ -15,15 +14,21 @@ $(document).ready(function() {
         ordering:true,
         lengthMenu :[5, 10, 15, 100],
         pageLength :5,
+        scrollCollapse : true,
         ajax: {
             url: '/admin/get-list',
             dataType: 'json',
+            data: function (data) {
+                data.status = $("#status option:selected").val();
+                data.langcode = $("#langcode option:selected").val();
+            },
         },
         aoColumns: [
             { data: 'serial_no'},
             { data: 'title'},
-            { data: 'body_value' },
             { data: 'status' },
+            { data: 'langcode' },
+            { data: 'changed' },
             { data: Drupal.t('action'), }
         ],
         columnDefs:[
@@ -43,26 +48,33 @@ $(document).ready(function() {
             },
             {
                 render: function (data, type, row) {
-                    return data;
-                },
-                data: "body_value",
-                targets: 2,
-            },
-            {
-                render: function (data, type, row) {
                     if( data ==1){
-                        data = "Active";
+                        data = Drupal.t('Active');
                     }else {
-                        data = "InActive";
+                        data = Drupal.t('InActive');
                     }
                     return data;
                 },
                 data: "status",
-                targets: 3,
+                targets: 2,
             },
-
             {
-                render: function (data, type, row) {             
+                render: function (data, type, row) {
+                    console.log(data);
+                    return data;
+                },
+                data: "langcode",
+                targets:3,
+            },  
+             {
+                render: function (data, type, row) {
+                    return  formatDate(row.changed)
+                },
+                data: "created",
+                targets: 4,
+            },
+            {
+                render: function (data, type, row) {            
                         var deleteLink = '<a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a>';
                         var editLink = '<a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a>';
                         var quickEditLink = '<a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a>';
@@ -71,11 +83,11 @@ $(document).ready(function() {
                     
                 },
                 data: Drupal.t('action'),
-                targets: 4,
+                targets: 5,
             }
         ],
         language: {
-            lengthMenu: ""+Drupal.t('Display')+""+ "_MENU_" + ""+Drupal.t('entries')+"",
+            lengthMenu: ""+Drupal.t('Display')+" "+ "_MENU_" + " "+Drupal.t('entries')+"",
             zeroRecords: ""+Drupal.t('Nothing found - sorry')+"",
             info:  ""+Drupal.t('Showing')+" _START_ "+Drupal.t('to')+" _END_ "+Drupal.t('of')+" _TOTAL_ "+Drupal.t('entries')+"",
             infoEmpty: "No records available",
@@ -88,6 +100,15 @@ $(document).ready(function() {
             },
         },
         
+    });
+    $(document).on('change', '#status', function (evt) { 
+        table
+        .draw();
+    });
+
+    $(document).on('change', '#langcode', function (evt) {
+        table
+        .draw();
     });
 
     $(document).on('click', '#btn_search', function(evt) {
@@ -128,12 +149,9 @@ $(document).ready(function() {
             url: "/admin/view/"+nid+"",
             dataType: 'json',
             success: function (res) {
-                var url_image ="/sites/default/files/2023-06/"+res.url+""
-                // var url_image ="/"+res.url+""
-                console.log(url_image)
-                $('.title_view').val(res.data.title)
+                $('.title_view').text(res.data.title)
                 $('.body_value_view').text(res.data.body_value)
-                $('#image').attr("src",url_image)
+                $('#image').attr("src",res.url)
             },
             error: function () {
                 alert('error');
@@ -214,5 +232,19 @@ $(document).ready(function() {
     //         }
     //     });
     // })
+
+    function formatDate(timestamp) {
+        var date = new Date(timestamp * 1000);
+      
+        var year = date.getFullYear(); 
+        var month = date.getMonth() + 1; 
+        var day = date.getDate(); 
+        var formattedDate = day + '/' + month + '/' + year;
+      
+        return formattedDate;
+    }
+
+
+    
     
 });
