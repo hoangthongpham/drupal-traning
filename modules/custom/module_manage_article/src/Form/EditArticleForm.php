@@ -23,6 +23,12 @@
         public function buildForm(array $form,FormStateInterface $form_state ){
             $nid = \Drupal::routeMatch()->getParameter('id');
             $node = \Drupal\node\Entity\Node::load($nid);
+            if(isset($_GET['langcode'])){
+                $langCode = $_GET['langcode'];
+            }
+            if($node->hasTranslation($langCode)) {
+                $node = $node->getTranslation($langCode);
+            }
             if($node->get('field_image')->target_id){
                 $file = File::load($node->get('field_image')->target_id);
                 $field_image =  $file->fid->value;
@@ -111,6 +117,12 @@
             }
             $nid = \Drupal::routeMatch()->getParameter('id');
             $node = \Drupal\node\Entity\Node::load($nid);
+            if(isset($_GET['langcode'])){
+                $langCode = $_GET['langcode'];
+            }
+            if($node->hasTranslation($langCode)) {
+                $node = $node->getTranslation($langCode);
+            }
             $termId = $node->get('field_tags')->target_id;
             $term = Term::load($termId);
             $term->name->setValue($postData['field_tags']);

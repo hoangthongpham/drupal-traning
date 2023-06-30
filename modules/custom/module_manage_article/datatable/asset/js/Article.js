@@ -75,22 +75,17 @@ $(document).ready(function() {
             },
             {
                 render: function (data, type, row) { 
+                    var lang = $("#langcode option:selected").val();
                     var action = '<ul class="icons-list" >' +
                     '<li class="dropdown" >' +
                     '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
                     '<i class="icon-menu9"> </i></a>' +
                     '<ul class="dropdown-menu dropdown-menu-right">';
                     action += '<li><a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a> </li>';
-                    action += '<li> <a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a> </li>';
+                    action += '<li> <a  href="/admin/article/edit/' + row.nid + '?langcode='+lang+'">'+Drupal.t('Edit')+'</a> </li>';
                     action += '<li> <a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a> </li>';
                     action += '<li> <a  href="javascript:void(0)/' + row.nid + '" data-toggle="modal" data-target="#view_modal" class="view_article" id="view_article"  data-id='+ row.nid +'>'+Drupal.t('View')+'</a></li> </ul></li></ul>';
-                    return 	action;            
-                        var deleteLink = '<a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a>';
-                        var editLink = '<a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a>';
-                        var quickEditLink = '<a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a>';
-                        var viewLink = '<a  href="javascript:void(0)/' + row.nid + '" data-toggle="modal" data-target="#view_modal" class="view_article" id="view_article"  data-id='+ row.nid +'>'+Drupal.t('View')+'</a>';
-                    return deleteLink + ' || ' + editLink +' || '+ quickEditLink +' || '+ viewLink;
-                    
+                    return 	action;              
                 },
                 data: Drupal.t('action'),
                 targets: 5,
@@ -212,11 +207,10 @@ $(document).ready(function() {
             },
         },
         submitHandler: function(form) {
-            var nid = $(this).data('id');
             var lang = $("#langcode option:selected").val();
             $.ajax({
                 type: "POST",
-                url: "/admin/update-article/"+nid+"?langcode="+lang+"",
+                url: "/admin/update-article/?langcode="+lang+"",
                 data: $('form.quickForm').serialize(),
                 success: function(response) {
                     alert('Updated successfully');

@@ -47,7 +47,7 @@ module_manage_article.showArticle:
     _permission: "admin user"
 
 module_manage_article.updateArticle:
-  path: "/admin/update-article/{id}"
+  path: "/admin/update-article"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\ArticleController::updateArticle'
     _title: "Update Article"

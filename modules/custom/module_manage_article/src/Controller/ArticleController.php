@@ -17,16 +17,20 @@ use Symfony\Component\HttpFoundation\Request;
 class ArticleController extends ControllerBase {
 
     public function load(){
-        $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
+        // $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
+        $languages = \Drupal::languageManager()->getLanguages();
+        
+        
         return [
             '#theme' => 'module_manage_article',
+            '#data' => $languages,
             '#attached' => [
                'library' => ['module_manage_article/datatable_asset']
             ],
-            '#langCode' => $langCode
         ];
     }
     public function getList(Request $request) {
+        
         $Mdl = new ArticleModel();
         $result = $Mdl->getListArticle($request);
         $data = [];
@@ -92,22 +96,25 @@ class ArticleController extends ControllerBase {
     }
 
     public function updateArticle(Request $request){
-        $nid = $request->get('nid');
-        $title = $request->get('title');
-        $body = $request->get('body_value');
-        $node = \Drupal\node\Entity\Node::load($nid);
-        $node->getTranslation('vi');
-        $node->title =  $title;
-        $node->body =  $body;
-        $node->save();
-        if($node){
-            $response = new Response('success');
-            return $response;
-        }else {
-            $response = new Response('fail');
-            return  $response;
+        try {
+            if(isset($_GET['langcode'])){
+                $langCode = $_GET['langcode'];
+            }
+           
+            $nid = $request->get('nid');
+            $title = $request->get('title');
+            $body = $request->get('body_value');
+            $node = \Drupal\node\Entity\Node::load($nid);
+            if($node->hasTranslation($langCode)) {
+                $node = $node->getTranslation($langCode);
+            }
+            $node->title =  $title;
+            $node->body =  $body;
+            $node->save();
+            return new Response('success');
+        } catch (Exception $e) {
+            return new Response('fail');
         }
-        
     }
 
 }
