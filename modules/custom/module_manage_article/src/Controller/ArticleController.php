@@ -19,8 +19,6 @@ class ArticleController extends ControllerBase {
     public function load(){
         // $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         $languages = \Drupal::languageManager()->getLanguages();
-        
-        
         return [
             '#theme' => 'module_manage_article',
             '#data' => $languages,
@@ -67,10 +65,10 @@ class ArticleController extends ControllerBase {
         if ($node) {
             $node->delete();
         }
-        $termId = $node->get('field_tags')->target_id;
-        if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
-            $term->delete();
-        }
+        // $termId = $node->get('field_tags')->target_id;
+        // if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
+        //     $term->delete();
+        // }
         \Drupal::messenger()->addStatus($this->t('Article delete successfully!'), 'success', TRUE);
         return
             $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');

@@ -99,9 +99,7 @@
                 $node = Node::create(array(
                     'type' => 'article',
                     'title' => $postData['title'],
-                    'langcode' => 'en',
-                    'uid' => '1',
-                    'status' => 1,
+                    'langcode' => 'en', 
                     'body' => $postData['body_value'],
                     'field_image'=>[
                         'target_id' => $fileId,
@@ -118,8 +116,6 @@
                     'type' => 'article',
                     'title' => $postData['title'],
                     'langcode' => 'en',
-                    'uid' => '1',
-                    'status' => 1,
                     'body' => $postData['body_value'],
                     'field_image'=>[
                         'target_id' => $fileId,
@@ -133,7 +129,6 @@
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send();
             \Drupal::messenger()->addStatus(t('Article data save successfully!'), 'status',TRUE);
-
 
         }
 

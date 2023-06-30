@@ -8,14 +8,7 @@
         <input class="search" id ="search_form" type="text"></input>
         <button class="btn_search btn-primary" id="btn_search" type="button">{{ 'Search'|t }}</button>
     </div>
-    {# <div id ="filter_language"class="filter_language">
-        <label>{{ 'Language'|t }}</label>
-        <select class="form-select form-select-md item-search" name="langcode" id = "langcode" >
-            <option value="English">{{ 'English'|t }}</option>
-            <option value="Vietnamese">{{ 'Vietnamese'|t }}</option>
-        </select>
-    </div> #}
-
+    
     <div id="filter_language" class="filter_language">
         <label>{{ 'Language'|t }}</label>
         <select class="form-select form-select-md item-search" name="langcode" id="langcode">
@@ -99,7 +92,7 @@
                 <div class="article_image form-control">
                     <img src="" width="200" height="200" class="image" id ="image" name="image"></img>
                 </div>
-                <p class="body_value_view" name="body_value_view" value="" rows="3"></p>
+                <p class="body_value_view" name="body_value_view" value=""></p>
             </div>
       </div>
       <!-- Modal footer -->
