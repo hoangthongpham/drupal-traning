@@ -60,7 +60,7 @@ $(document).ready(function() {
             },
             {
                 render: function (data, type, row) {
-                    console.log(data);
+            
                     return data;
                 },
                 data: "langcode",
@@ -74,7 +74,17 @@ $(document).ready(function() {
                 targets: 4,
             },
             {
-                render: function (data, type, row) {            
+                render: function (data, type, row) { 
+                    var action = '<ul class="icons-list" >' +
+                    '<li class="dropdown" >' +
+                    '<a href="#" class="dropdown-toggle" data-toggle="dropdown">' +
+                    '<i class="icon-menu9"> </i></a>' +
+                    '<ul class="dropdown-menu dropdown-menu-right">';
+                    action += '<li><a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a> </li>';
+                    action += '<li> <a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a> </li>';
+                    action += '<li> <a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a> </li>';
+                    action += '<li> <a  href="javascript:void(0)/' + row.nid + '" data-toggle="modal" data-target="#view_modal" class="view_article" id="view_article"  data-id='+ row.nid +'>'+Drupal.t('View')+'</a></li> </ul></li></ul>';
+                    return 	action;            
                         var deleteLink = '<a class="delete_item" data-id='+ row.nid +'  href="/admin/article/delete/' + row.nid + '">'+Drupal.t('Delete')+'</a>';
                         var editLink = '<a  href="/admin/article/edit/' + row.nid + '">'+Drupal.t('Edit')+'</a>';
                         var quickEditLink = '<a href="javascript:void(0)" data-toggle="modal" data-target="#edit_modal" class="quick_edit" id="quick_edit"  data-id='+ row.nid +'>'+Drupal.t('Quick edit')+'</a>';
@@ -143,10 +153,12 @@ $(document).ready(function() {
     // view article
     $(document).on('click','.view_article',function(){
         var nid = $(this).data('id');
+        var lang = $("#langcode option:selected").val();
+        console.log(lang);
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/admin/view/"+nid+"",
+            url: "/admin/view/"+nid+"?langcode="+lang+"",
             dataType: 'json',
             success: function (res) {
                 $('.title_view').text(res.data.title)
@@ -162,10 +174,11 @@ $(document).ready(function() {
     // quick edit
     $(document).on('click','.quick_edit',function(){
         var nid = $(this).data('id');
+        var lang = $("#langcode option:selected").val();
         $.ajax({
             type: "GET",
             contentType: "application/json",
-            url: "/admin/quick-edit/"+nid+"",
+            url: "/admin/quick-edit/"+nid+"?langcode="+lang+"",
             data:{id:nid},
             dataType: 'json',
             success: function (res) {
@@ -199,9 +212,11 @@ $(document).ready(function() {
             },
         },
         submitHandler: function(form) {
+            var nid = $(this).data('id');
+            var lang = $("#langcode option:selected").val();
             $.ajax({
                 type: "POST",
-                url: "/admin/update-article",
+                url: "/admin/update-article/"+nid+"?langcode="+lang+"",
                 data: $('form.quickForm').serialize(),
                 success: function(response) {
                     alert('Updated successfully');

@@ -11,50 +11,50 @@
         );
     }
     function module_manage_article_toolbar(){
-    $patterns = ['module_manage_article' => 'module_manage_article.load'];
-    $module_handler = \Drupal::moduleHandler();
-    // Build a list of links for the menu.
-    $links = [];
-    foreach ($patterns as $module => $route) {
-        // Get the module info (title, description) from Drupal.
-        $extension_list_module = \Drupal::service('extension.list.module');
-        $info = $extension_list_module->getExtensionInfo($module);
-        // If there's no info, the example isn't enabled, so don't display it.
-        if (!empty($info)) {
-            $links[$module] = array(
-                'title' => ($info['name']),
-                'url' => Url::fromRoute($route),
-                'attributes' => array(
-                    'title' => $info['name'],
-                ),
-            );
+        $patterns = ['module_manage_article' => 'module_manage_article.load'];
+        $module_handler = \Drupal::moduleHandler();
+        // Build a list of links for the menu.
+        $links = [];
+        foreach ($patterns as $module => $route) {
+            // Get the module info (title, description) from Drupal.
+            $extension_list_module = \Drupal::service('extension.list.module');
+            $info = $extension_list_module->getExtensionInfo($module);
+            // If there's no info, the example isn't enabled, so don't display it.
+            if (!empty($info)) {
+                $links[$module] = array(
+                    'title' => ($info['name']),
+                    'url' => Url::fromRoute($route),
+                    'attributes' => array(
+                        'title' => $info['name'],
+                    ),
+                );
+            }
         }
-    }
-    $items['module_manage_article'] = [
-        '#type'   => 'toolbar_item',
-        'tab'     => [
-            '#type'       => 'link',
-            '#title'      => t('Custom menu'),
-            '#url'        => Url::fromRoute('module_manage_article.load'),
-            '#attributes' => [
-                'title' => t('Custom articles'),
-                'class' => [
-                    'toolbar-icon',
-                    'toolbar-icon-menu'
+        $items['module_manage_article'] = [
+            '#type'   => 'toolbar_item',
+            'tab'     => [
+                '#type'       => 'link',
+                '#title'      => t('Custom menu'),
+                '#url'        => Url::fromRoute('module_manage_article.load'),
+                '#attributes' => [
+                    'title' => t('Custom articles'),
+                    'class' => [
+                        'toolbar-icon',
+                        'toolbar-icon-menu'
+                    ],
                 ],
             ],
-        ],
-        'tray' => array(
-            '#heading' => t('Toppage Management'),
-            'shortcuts' => array(
-                '#theme' => 'links__toolbar_patterns',
-                '#links' => $links,
-                '#attributes' => array(
-                    'class' => array('toolbar-menu'),
+            'tray' => array(
+                '#heading' => t('Toppage Management'),
+                'shortcuts' => array(
+                    '#theme' => 'links__toolbar_patterns',
+                    '#links' => $links,
+                    '#attributes' => array(
+                        'class' => array('toolbar-menu'),
+                    ),
                 ),
             ),
-        ),
-    ];
+        ];
 
-    return $items;
-}
+        return $items;
+    }

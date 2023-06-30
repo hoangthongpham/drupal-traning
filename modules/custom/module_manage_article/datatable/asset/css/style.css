@@ -3,6 +3,8 @@
     background: #0d6efd;
     color: white;
     padding: 8px 30px;
+    float: right;
+    margin-top:24px;
 }
 
 .dataTables_wrapper{
@@ -36,23 +38,43 @@ p.body_value_view {
 .article_image {
     text-align: center;
 }
-
+ /* element dataTable */
 #listTable_filter{
     display: none;
 }
-#form_search{
-    margin-top: 28px;
+div#listTable_info {
+    display: none;
 }
+.dataTables_length{
+    display: none;
+}
+
+.dataTables_paginate {
+    float: none !important;
+    padding-top: 0.25em;
+    text-align: center !important;
+    margin-top: 10px;
+}
+
+
+
+/*filter*/
 .filter_article {
     display: flex;
-    position: absolute;
-    top: 220px;
-    right: 46px;
-    z-index: 1001;
-    flex-wrap: nowrap;
-    flex-direction: row;
     justify-content: space-between;
-    align-items: flex-start;
+}
+.filter_language {}
+   
+
+.form_search{
+    margin-top: 28px;
+    width: 37%;
+}
+.filter_language{
+    width: 20%;
+}
+.filter_status{
+    width: 20%;
 }
 
 .btn-primary {
@@ -65,23 +87,32 @@ p.body_value_view {
 }
 
 
-.dropdown-toggle::after{
-    font-family: 'icomoon';
-    speak: none;
-    font-style: normal;
-    font-weight: normal;
-    font-variant: normal;
-    text-transform: none;
-    line-height: 1;
-    min-width: 1em;
+.dropdown-toggle::after {
     display: inline-block;
-    text-align: center;
-    font-size: 16px;
-    vertical-align: middle;
-    position: relative;
-    top: -1px;
-    -webkit-font-smoothing: antialiased;
-    -moz-osx-font-smoothing: grayscale;
+    content: "";
+    margin-left: 0.255em;
+    vertical-align: 0.255em;
+    background-image: url("/./sites/default/files/upload/dropdown.png");
+    background-size: cover;
+    background-repeat: no-repeat;
+    width: 30px;
+    height: 30px;
+    border-top: 0em solid;
+    border-right: 0.0em solid transparent;
+    border-bottom: 0;
+    border-left: 0.3em solid transparent;
 }
 
+.page-wrapper *:focus, .ui-dialog *:focus {
+    outline: none !important;
+    box-shadow: none !important;
+}
 
+ul.dropdown-menu.dropdown-menu-right.show {
+    position: absolute !important;
+    text-align: center !important;
+    transform: translate3d(-2px, -98px, 0px) !important;
+    top: 130px !important;
+    left: 0px !important;
+    will-change: transform !important;
+}

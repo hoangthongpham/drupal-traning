@@ -96,6 +96,7 @@ class ArticleController extends ControllerBase {
         $title = $request->get('title');
         $body = $request->get('body_value');
         $node = \Drupal\node\Entity\Node::load($nid);
+        $node->getTranslation('vi');
         $node->title =  $title;
         $node->body =  $body;
         $node->save();

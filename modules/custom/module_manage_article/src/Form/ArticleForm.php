@@ -89,30 +89,46 @@
             }else{
                 $fileId=null;
             }
-            $new_term = Term::create([
-                'vid' => 'tags',
-                'name' => $postData['field_tags'],
-            ]);
-            $new_term->enforceIsNew();
-            $new_term->save();
-            $node = Node::create(array(
-                'type' => 'article',
-                'title' => $postData['title'],
-                'langcode' => 'en',
-                'uid' => '1',
-                'status' => 1,
-                'body' => $postData['body_value'],
-                'field_image'=>[
-                    'target_id' => $fileId,
-                    'alt'=>'',
-                    'title'=>''
-                ],
-                'field_tags'=>[
-                    'target_id'=>$new_term->tid->value
-                ],
-                'status'=>$postData['status'],
-                 
-            ));       
+            if($postData['field_tags']){
+                $new_term = Term::create([
+                    'vid' => 'tags',
+                    'name' => $postData['field_tags'],
+                ]);
+                $new_term->enforceIsNew();
+                $new_term->save();
+                $node = Node::create(array(
+                    'type' => 'article',
+                    'title' => $postData['title'],
+                    'langcode' => 'en',
+                    'uid' => '1',
+                    'status' => 1,
+                    'body' => $postData['body_value'],
+                    'field_image'=>[
+                        'target_id' => $fileId,
+                        'alt'=>'',
+                        'title'=>''
+                    ],
+                    'field_tags'=>[
+                        'target_id'=>$new_term->tid->value
+                    ],
+                    'status'=>$postData['status'], 
+                ));  
+            }else{
+                $node = Node::create(array(
+                    'type' => 'article',
+                    'title' => $postData['title'],
+                    'langcode' => 'en',
+                    'uid' => '1',
+                    'status' => 1,
+                    'body' => $postData['body_value'],
+                    'field_image'=>[
+                        'target_id' => $fileId,
+                        'alt'=>'',
+                        'title'=>''
+                    ],
+                    'status'=>$postData['status'], 
+                ));  
+            }    
             $node->save();
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send();
