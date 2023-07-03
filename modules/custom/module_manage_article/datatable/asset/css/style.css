@@ -147,4 +147,14 @@ ul.dropdown-menu.dropdown-menu-right.show {
     max-height: 400px; 
     overflow-y: auto;
   }
+
+
+  .btn-primary {
+    color: #fff;
+    height: 38px;
+    width: 100px;
+    background-color: #0d6efd;
+    border-color: #0d6efd;
+    border-radius: 5%;
+}
   

@@ -36,15 +36,16 @@
                 $field_image='';
             }
 
-            $termId = $node->get('field_tags')->target_id;
-        
-            $term = Term::load($termId);
-            if($term){
-                $name_tag = $term->name->value;
-            }else{
-                $name_tag = '';
+            $name_tag = '';
+            if($node->get('field_tags')->target_id){
+                $termId = $node->get('field_tags')->target_id;
+                $term = Term::load($termId);
+                if($term){
+                    $name_tag = $term->name->value;
+                }else{
+                    $name_tag = '';
+                }
             }
-           
             $form['title'] = array(
                 '#type'=>'textfield',
                 '#title'=>$this->t('Title'),
@@ -123,11 +124,19 @@
             if($node->hasTranslation($langCode)) {
                 $node = $node->getTranslation($langCode);
             }
-            $termId = $node->get('field_tags')->target_id;
-            $term = Term::load($termId);
-            $term->name->setValue($postData['field_tags']);
-            $term->Save();
-             
+            if($node->get('field_tags')->target_id){
+                $termId = $node->get('field_tags')->target_id;
+                $term = Term::load($termId);
+                $term->name->setValue($postData['field_tags']);
+                $term->Save();
+            }else {
+                $term = Term::create([
+                    'vid' => 'tags', // Thay 'tags' bằng VID của vocabulary bạn muốn sử dụng.
+                    'name' => $postData['field_tags'],
+                ]);
+                $term->save();
+            }
+            $node->get('field_tags')->target_id = $term->id();
             $node->title = $postData['title'];
             $node->body = $postData['body_value'];
             $node->field_image = $fileId;
@@ -137,7 +146,7 @@
             $response  = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
             $response->send(); 
              
-            \Drupal::messenger()->addStatus($this->t('Article data save successfully!'), 'status',TRUE);
+            \Drupal::messenger()->addStatus($this->t('Article update successfully!'), 'status',TRUE);
         }
 
     }

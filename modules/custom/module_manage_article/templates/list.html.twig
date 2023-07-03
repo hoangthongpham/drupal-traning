@@ -13,7 +13,7 @@
         <label>{{ 'Language'|t }}</label>
         <select class="form-select form-select-md item-search" name="langcode" id="langcode">
             {% for code, language in data %}
-                <option value="{{ code }}">{{ language.getName() }}</option>
+                <option value="{{ code }}">{{ language.getName()|t }}</option>
             {% endfor %}
         </select>
     </div>
@@ -48,7 +48,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">Edit Article</h4>
+        <h4 class="modal-title">{{ 'Edit Article'|t }}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->
@@ -82,7 +82,7 @@
     <div class="modal-content">
       <!-- Modal Header -->
       <div class="modal-header">
-        <h4 class="modal-title">View Article</h4>
+        <h4 class="modal-title">{{ 'View Article'|t }}</h4>
         <button type="button" class="close" data-dismiss="modal">&times;</button>
       </div>
       <!-- Modal body -->

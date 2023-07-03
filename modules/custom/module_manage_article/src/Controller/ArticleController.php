@@ -17,13 +17,16 @@ use Symfony\Component\HttpFoundation\Request;
 class ArticleController extends ControllerBase {
 
     public function load(){
-        // $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
+        $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         $languages = \Drupal::languageManager()->getLanguages();
         return [
             '#theme' => 'module_manage_article',
             '#data' => $languages,
             '#attached' => [
-               'library' => ['module_manage_article/datatable_asset']
+               'library' => ['module_manage_article/datatable_asset'],
+               'drupalSettings' => [
+                    'langCode' => $langCode,
+                ],
             ],
         ];
     }
