@@ -1,0 +1,16 @@
+global-styling:
+  version: 1.x
+  js:
+    public/js/script.js: {}
+  css:
+    theme:
+      public/css/style.css: {}
+
+ajax-pagination:
+  version: 1.x
+  js:
+    public/js/pagination.js: {}
+  dependencies:
+    - core/jquery
+
+  

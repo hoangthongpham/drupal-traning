@@ -2,7 +2,7 @@
 <div class="link_add">
     <a id="add_article" href="/admin/article/add">{{ 'Add article'|t }} </a>
 </div>
-<div class="filter_article col-md-7">
+<div class="filter_article col-md-10">
     <div id="form_search"class="form_search" >
         <label>{{ 'Search'|t }}</label>
         <input class="search" id ="search_form" type="text"></input>
@@ -25,6 +25,14 @@
             <option value="Active">{{ 'Active'|t }}</option>
             <option value="InActive">{{ 'InActive'|t }}</option>
         </select>
+    </div>
+    <div id="filter_date_from"class="filter_date_from" >
+        <label>{{ 'Date From'|t }}</label><br/>
+        <input class="date_from" id ="date_from" name = "date_from" type="text"></input>
+    </div>
+    <div id="filter_date_to"class="filter_date_to" >
+        <label>{{ 'Date To'|t }}</label><br/>
+        <input class="date_to" id ="date_to" name="date_to" type="text"></input>
     </div>
 </div>
 

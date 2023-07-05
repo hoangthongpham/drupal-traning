@@ -1,0 +1,25 @@
+name: Custom FrontEnd Theme
+type: theme
+description: 'Custom FrontEnd Theme for My Website.'
+package: Other
+core_version_requirement: ^8 || ^9
+
+libraries:
+- front_end/global-styling
+
+base theme: false
+
+regions:
+  header: Header
+  navigation: Navigation
+  featured: Featured
+  sidebar_left: Sidebar Left
+  content: Content
+  footer_first: Footer First
+  footer_second: Footer Second
+  footer_third: Footer Third
+  page_top: Page Top
+  page_bottom: Page Bottom
+
+# template: 'page--list-article'
+

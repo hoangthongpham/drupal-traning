@@ -1,0 +1,30 @@
+
+<header class="main-header" role="banner">
+  <div class="container">
+    {{ page.header }}
+    <div class="main-navigation">
+      {{ page.navigation }}
+    </div>
+  </div>
+
+</header> 
+<div class="container">
+    <section class="main" id="main">
+        <aside class="sidebar--left" id="sidebar" role="complementary">
+            {{ page.sidebar_left }}
+        </aside>
+        <main aria-label="Site main content" class="content" id="content" role="main">
+            {% block content %}
+            {{ page.content }}
+            {% endblock %}
+        </main>
+    </section>
+
+  <footer aria-label="Site footer" class="footer" id="footer" role="contentinfo">
+    <div class="footer--top">
+      {{ page.footer_first }}
+      {{ page.footer_second }}
+      {{ page.footer_third }}
+    </div>
+  </footer>
+</div>

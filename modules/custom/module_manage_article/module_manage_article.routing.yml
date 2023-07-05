@@ -63,3 +63,26 @@ module_manage_article.viewArticle:
     _format: "json"
   requirements:
     _permission: "admin user"
+
+module_manage_article.loadArticle:
+  path: "/list-article"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::loadArticle'
+    _title: "List articles"
+  requirements:
+    _permission: "access content"
+
+module_manage_article.list_article:
+  path: '/list-art'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::listArticles'
+  requirements:
+    _permission: 'access content'
+
+module_manage_article.detailArticle:
+  path: '/detail/{id}'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::detailArticle'
+  requirements:
+    _permission: 'access content'
+

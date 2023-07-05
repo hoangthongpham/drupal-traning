@@ -270,6 +270,7 @@
                     url: "/admin/update-article/?langcode="+lang+"",
                     data: $('form.quickForm').serialize(),
                     success: function(response) {
+                        $(document).find('#successEditModal').remove();
                         var successModal = $('<div class="modal fade" id="successEditModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
                         var successModalDialog = $('<div class="modal-dialog" role="document">');
                         var successModalContent = $('<div class="modal-content">');
@@ -311,9 +312,12 @@
         
             return formattedDate;
         }
-    
     });
 
 
 })(jQuery, Drupal, drupalSettings);
+$( function() {
+    $( "#date_from" ).datepicker();
+    $( "#date_to" ).datepicker();
+} );
   

@@ -7,11 +7,15 @@ datatable_asset:
       datatable/asset/js/bootstrap.min.js: {}
       datatable/asset/js/jquery.validate.min.js: {}
       datatable/asset/js/jquery.dataTables.min.js: {}
+      datatable/asset/js/jquery-ui.js: {}
       datatable/asset/js/article.js: {}
+      datatable/asset/js/pagination.js: {}
   css:
     theme:
       datatable/asset/css/jquery.dataTables.min.css: {}
       datatable/asset/css/bootstrap.min.css: {}
+      datatable/asset/css/jquery-ui.css: {}
       datatable/asset/css/style.css: {}
   dependencies:
   - core/jquery
+  - core/jquery.ui.datepicker

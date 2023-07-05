@@ -7,7 +7,19 @@
                 'variables'=>array(
                     'data' => []
                 )
-            )
+            ),
+            'module_manage_article_page' => [
+                'template' => 'list_article',
+                'variables' => [
+                  'articles' => [],
+                ],
+            ],
+            'module_manage_article_detail' => [
+                'template' => 'detail_article',
+                'variables' => [
+                  'article' => [],
+                ],
+            ],
         );
     }
     function module_manage_article_toolbar(){
