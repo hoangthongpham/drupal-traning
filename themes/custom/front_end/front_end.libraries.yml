@@ -1,16 +1,23 @@
 global-styling:
   version: 1.x
   js:
+    public/vendor/jquery/jquery.min.js: {}
+    public/vendor/bootstrap/js/bootstrap.bundle.min.js: {}
+    public/js/custom.js: {}
+    public/js/owl.js: {}
+    public/js/slick.js: {}
+    public/js/isotope.js: {}
+    public/js/accordions.js: {}
     public/js/script.js: {}
   css:
     theme:
+      public/vendor/bootstrap/css/bootstrap.min.css: {}
+      public/css/fontawesome.css: {}
+      public/css/templatemo-stand-blog.css: {}
+      public/css/owl.css: {}
+      public/css/flex-slider.css: {}
       public/css/style.css: {}
 
-ajax-pagination:
-  version: 1.x
-  js:
-    public/js/pagination.js: {}
-  dependencies:
-    - core/jquery
+
 
   

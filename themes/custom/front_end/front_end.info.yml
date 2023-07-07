@@ -13,7 +13,8 @@ regions:
   header: Header
   navigation: Navigation
   featured: Featured
-  sidebar_left: Sidebar Left
+  searchable: Searchable
+  sidebar_right: Sidebar Right
   content: Content
   footer_first: Footer First
   footer_second: Footer Second
@@ -21,5 +22,5 @@ regions:
   page_top: Page Top
   page_bottom: Page Bottom
 
-# template: 'page--list-article'
+
 

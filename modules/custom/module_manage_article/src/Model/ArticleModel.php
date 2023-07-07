@@ -26,6 +26,8 @@ class ArticleModel{
 
     public function getListArticle(Request $request) {
         $connection = \Drupal::database();
+        $dateFrom = isset($_GET['changed'][0])?($_GET['changed'][0]):"";
+        $dateTo = isset($_GET['changed'][1])?($_GET['changed'][1]):"";
         $start = $request->get('start');
         $length = $request->get('length');
         $searchValue = isset($request->get('search')['value']) ? $request->get('search')['value'] : '';
@@ -40,8 +42,15 @@ class ArticleModel{
         $query->fields('b', ['entity_id']);
         $query->condition('n.type', 'article', '=');
         $query->orderBy('t.changed', 'desc');
-    
+        
         if ($langCode ) {
+            if ($dateFrom && $dateTo) {
+                $query->condition('t.changed', array(strtotime($dateFrom), strtotime($dateTo)), 'BETWEEN');
+            } elseif ($dateFrom) {
+                $query->condition('t.changed', strtotime($dateFrom), '>=');
+            } elseif ($dateTo) {
+                $query->condition('t.changed', strtotime($dateTo), '<=');
+            }
             $query->condition('t.langcode', $langCode, '=');
             if($status && $status=='Active'||$status=='Active'&& $searchValue){
                 $query->condition('t.status',1, '=');
@@ -59,6 +68,13 @@ class ArticleModel{
         $totalItemsQuery = $connection->select('node_field_data', 't')
             ->condition('t.title', '%' . $connection->escapeLike($searchValue) . '%', 'LIKE');
         if ($langCode) {
+            if ($dateFrom && $dateTo) {
+                $totalItemsQuery->condition('t.changed', array(strtotime($dateFrom), strtotime($dateTo)), 'BETWEEN');
+            } elseif ($dateFrom) {
+                $totalItemsQuery->condition('t.changed', strtotime($dateFrom), '>=');
+            } elseif ($dateTo) {
+                $totalItemsQuery->condition('t.changed', strtotime($dateTo), '<=');
+            }
             $totalItemsQuery
             ->condition('t.langcode', $langCode,'=')
             ->condition('t.title', '%' . $connection->escapeLike($searchValue) . '%', 'LIKE');

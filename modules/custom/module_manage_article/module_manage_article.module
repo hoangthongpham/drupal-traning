@@ -8,7 +8,13 @@
                     'data' => []
                 )
             ),
-            'module_manage_article_page' => [
+            'module_manage_article_home' => [
+                'template' => 'home_page',
+                'variables' => [
+                  'articles' => [],
+                ],
+            ],
+            'module_manage_article_list' => [
                 'template' => 'list_article',
                 'variables' => [
                   'articles' => [],
@@ -18,6 +24,18 @@
                 'template' => 'detail_article',
                 'variables' => [
                   'article' => [],
+                ],
+            ],
+            'module_manage_article_search' => [
+                'template' => 'search_results',
+                'variables' => [
+                  'articles' => [],
+                ],
+            ],
+            'module_manage_article_tag' => [
+                'template' => 'tag_article',
+                'variables' => [
+                  'articles' => [],
                 ],
             ],
         );

@@ -1,0 +1,30 @@
+
+
+{% if articles %}
+  <h2>Search Results</h2>
+  {% for article in articles %}
+    <h3>{{ article.title }}</h3>
+    <p>{{ article.body|striptags }}</p>
+    {% if article.image_url %}
+      <div class="blog-thumb">
+          <img src="{{ article.image_url }}" alt="Article Image">
+      </div>
+    {% endif %}
+  {% endfor %}
+{% else %}
+  <p>No results found.</p>
+{% endif %}
+
+{# {% block content %}
+  <div class="pagination-search-content">
+  </div>
+  <div class="pagination_art_search">
+    <button id="pagination-previous" disabled>{{ 'Previous'|t }}</button>
+    <div id="pagination-numbers">
+    </div>
+    <button id="pagination-next" disabled>{{ 'Next'|t }}</button>
+  </div>
+{% endblock %}  #}
+
+
+

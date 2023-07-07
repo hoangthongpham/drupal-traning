@@ -20,8 +20,12 @@
                 url: '/admin/get-list',
                 dataType: 'json',
                 data: function (data) {
+                    var dataFrom = $('#date_from').val();
+                    var dataTo = $('#date_to').val();
                     data.status = $("#status option:selected").val();
                     data.langcode = $("#langcode option:selected").val();
+                    data.changed =[dataFrom,dataTo]  ;
+                    console.log(data.changed);
                 },
             },
             aoColumns: [
@@ -308,16 +312,36 @@
             var year = date.getFullYear(); 
             var month = date.getMonth() + 1; 
             var day = date.getDate(); 
-            var formattedDate = day + '/' + month + '/' + year;
+            var formattedDate = month + '/' + day + '/' + year;
         
             return formattedDate;
         }
+
+        $("#date_from").datepicker({
+            format: "dd/mm/yyyy hh:ii",
+            startDate: "00:00",
+          
+          });
+          
+          $("#date_to").datepicker({
+            format: "dd/mm/yyyy hh:ii",
+            startDate: "00:00", 
+  
+          });
+          
+    
+        $(document).on('change', '#date_from', function (evt) { 
+            table
+            .draw();
+        });
+    
+        $(document).on('change', '#date_to', function (evt) { 
+            table
+            .draw();
+        });
     });
 
 
 })(jQuery, Drupal, drupalSettings);
-$( function() {
-    $( "#date_from" ).datepicker();
-    $( "#date_to" ).datepicker();
-} );
+
   

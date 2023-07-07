@@ -64,17 +64,15 @@ div#listTable_info {
     justify-content: space-between;
     align-items: center;
 }
-.filter_language {}
    
-
 .form_search{
     margin-top: 28px;
 }
 .filter_language{
-    width: 20%;
+    width: 10%;
 }
 .filter_status{
-    width: 20%;
+    width: 10%;
 }
 
 .btn-primary {

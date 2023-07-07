@@ -64,6 +64,24 @@ module_manage_article.viewArticle:
   requirements:
     _permission: "admin user"
 
+
+# Frontend
+
+module_manage_article.load_home:
+  path: "/home"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::loadHome'
+    _title: "Home"
+  requirements:
+    _permission: "user"
+
+module_manage_article.home_data:
+  path: '/home-data'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::homeData'
+  requirements:
+    _permission: 'access content'
+
 module_manage_article.loadArticle:
   path: "/list-article"
   defaults:
@@ -83,6 +101,29 @@ module_manage_article.detailArticle:
   path: '/detail/{id}'
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::detailArticle'
+  requirements:
+    _permission: 'access content'
+
+module_manage_article.tagArticle:
+  path: '/article-tag'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::articleTag'
+  requirements:
+    _permission: 'access content'
+
+# module_manage_article.loadSearch:
+#   path: '/search'
+#   defaults:
+#     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::loadSearch'
+#     _title: 'Search'
+#   requirements:
+#     _permission: 'access content'
+
+module_manage_article.search:
+  path: '/search'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::searchPage'
+    _title: 'Search'
   requirements:
     _permission: 'access content'
 

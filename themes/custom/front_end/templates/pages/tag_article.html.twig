@@ -1,0 +1,16 @@
+  <h1>xin chao tag article</h1>
+  
+  
+  {# {% block content %}
+    {% if articles %}
+        <h2>{{ articles.getTitle }}</h2>
+        {% if articles.body %}
+          <p>{{ article.body.value|striptags }}</p>
+        {% endif %}
+        {% if articles.field_image.entity %}
+          <div style="text-align: center;">
+            <img src="{{ file_url(articles.field_image.entity.fileuri) }}" alt="Article Image">
+          </div>
+        {% endif %}
+    {% endif %}
+  {% endblock %} #}

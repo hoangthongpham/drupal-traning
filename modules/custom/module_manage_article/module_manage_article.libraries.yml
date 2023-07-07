@@ -9,7 +9,10 @@ datatable_asset:
       datatable/asset/js/jquery.dataTables.min.js: {}
       datatable/asset/js/jquery-ui.js: {}
       datatable/asset/js/article.js: {}
+      datatable/asset/js/home.js: {}
       datatable/asset/js/pagination.js: {}
+      # datatable/asset/js/search.js: {}
+
   css:
     theme:
       datatable/asset/css/jquery.dataTables.min.css: {}

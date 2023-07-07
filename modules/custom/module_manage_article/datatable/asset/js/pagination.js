@@ -3,10 +3,8 @@
         $(document).ready(function() {
         // attach: function (context, settings) {
             var langCode = drupalSettings.langCode;
-            console.log(langCode);
             var page = 0; 
-            var totalPages = 0; 
-        
+            var totalPages = 0;
             function loadContent(page) {
                 $.ajax({
                     url: '/list-art',
@@ -14,24 +12,55 @@
                     dataType: 'json',
                     data: {
                     page: page,
-                    langcode:langCode
+                    langcode:langCode,
                     },
                     success: function (response) {
                         var content = response.content;
                         totalPages = response.pages;
-                        
                         var html = '';
                         for (var i = 0; i < content.length; i++) {
                             var maxLength = 250; 
                             var truncatedBody = content[i].body.length > maxLength ? content[i].body.substring(0, maxLength) + '...' : content[i].body;
-                            html += '<div class="item">';
-                            html += '<h2><a href="/'+langCode+'/detail/' + content[i].nid + '">' + content[i].title + '</a></h2>';
-                            html += '<p>' + truncatedBody + '</p>';
+                    
+                            html += '<div class="blog-post">';
                             if (content[i].image_url) {
-                                html +='<div class="item_image">';
+                                html +='<div class="blog-thumb">';
+                                html += '<a href="/'+langCode+'/detail/' + content[i].nid + '"><img src="' + content[i].image_url + '" alt="Image"></a>';
+                                html += '</div>';
+                            }else{
+                                html +='<div class="blog-thumb">';
                                 html += '<a href="/'+langCode+'/detail/' + content[i].nid + '"><img src="' + content[i].image_url + '" alt="Image"></a>';
                                 html += '</div>';
                             }
+                            html +=    '<div class="down-content">';
+                            html += '<h4><a href="/'+langCode+'/detail/' + content[i].nid + '">' + content[i].title + '</a></h4>';
+                            // html +=       '<ul class="post-info">'
+                            // html +=           '<li><a href="#">Admin</a></li>';
+                            // html +=            '<li><a href="#">May 31, 2020</a></li>';
+                            // html +=           '<li><a href="#">12 Comments</a></li>';
+                            // html +=        '</ul>';
+                            html +=        '<div class="body_content">';
+                            html +=            '<p>' + truncatedBody + '</p>';
+                            html +=        '</div>'
+                            html +=        '<div class="post-options">';
+                            html +=            '<div class="row">';
+                            html +=           '<div class="col-6">';
+                            html +=                '<ul class="post-tags">';
+                            html +=                '<li><i class="fa fa-tags"></i></li>';
+                            html +=                '<li><a href="#">Beauty</a>,</li>';
+                            html +=                '<li><a href="#">Nature</a></li>';
+                            html +=                '</ul>';
+                            html +=            '</div>';
+                            html +=            '<div class="col-6">';
+                            html +=                '<ul class="post-share">';
+                            html +=                '<li><i class="fa fa-share-alt"></i></li>';
+                            html +=                '<li><a href="#">Facebook</a>,</li>';
+                            html +=                '<li><a href="#"> Twitter</a></li>';
+                            html +=                '</ul>';
+                            html +=            '</div>';
+                            html +=            '</div>';
+                            html +=        '</div>';
+                            html +=    '</div>';
                             html += '</div>';
                         }
                     $('#pagination-content').html(html);

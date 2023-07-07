@@ -31,7 +31,6 @@ class ArticleController extends ControllerBase {
         ];
     }
     public function getList(Request $request) {
-        
         $Mdl = new ArticleModel();
         $result = $Mdl->getListArticle($request);
         $data = [];
@@ -45,7 +44,6 @@ class ArticleController extends ControllerBase {
                 'langcode' => $row->langcode,
             ];
         }
- 
         $response = new JsonResponse([
             'recordsTotal'    => intval($result[1]),
             'recordsFiltered' => intval($result[1]),
