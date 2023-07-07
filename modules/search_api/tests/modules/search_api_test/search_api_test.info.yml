@@ -1,0 +1,12 @@
+name: 'Search API Test'
+type: module
+description: 'Support module for Search API tests'
+package: Testing
+dependencies:
+  - search_api:search_api
+hidden: true
+
+# Information added by Drupal.org packaging script on 2023-06-17
+version: '8.x-1.29+35-dev'
+project: 'search_api'
+datestamp: 1687009619

@@ -97,6 +97,14 @@ header.main-header .container {
 form#search-block-form {
     display: flex;
 }
+
+form#search_form {
+    display: flex;
+}
+
+.blog-posts .down-content h4 a {
+    text-decoration: underline !important;
+}
 /* div#block-front-end-search h2 {
     border-bottom: 1px solid #ccc;
     background: #deb887;

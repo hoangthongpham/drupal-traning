@@ -1,7 +1,44 @@
-
-
+{# <h2>Search Results</h2> #}
 {% if articles %}
-  <h2>Search Results</h2>
+  {% for article in articles %}
+    <div class="blog-post">
+        {% if article.image_url %}
+          <div class="blog-thumb">
+              <img src="{{ article.image_url }}" alt="Article Image">
+          </div>
+        {% endif %}
+        <div class="down-content">
+            <h4><a href='/detail/{{ article.nid }}'>{{ article.title }}</a></h4>
+              <div class="body_content">
+            <p>{{ article.body|striptags }}</p>
+        </div>
+        <div class="post-options">
+            <div class="row">
+                <div class="col-6">
+                    <ul class="post-tags">
+                        <li><i class="fa fa-tags"></i></li>
+                        <li><a href="#">Beauty</a>,</li>
+                        <li><a href="#">Nature</a></li>
+                    </ul>
+                    </div>
+                <div class="col-6">
+                    <ul class="post-share">
+                        <li><i class="fa fa-share-alt"></i></li>
+                        <li><a href="#">Facebook</a>,</li>
+                        <li><a href="#"> Twitter</a></li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No results found.</p>
+{% endif %}
+
+
+{# {% if articles %}
   {% for article in articles %}
     <h3>{{ article.title }}</h3>
     <p>{{ article.body|striptags }}</p>
@@ -13,7 +50,7 @@
   {% endfor %}
 {% else %}
   <p>No results found.</p>
-{% endif %}
+{% endif %} #}
 
 {# {% block content %}
   <div class="pagination-search-content">
