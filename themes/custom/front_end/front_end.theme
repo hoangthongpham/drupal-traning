@@ -1,5 +1,39 @@
 <?php 
 
+// function front_end_preprocess_page(&$variables) {
+//     $controller = \Drupal::classResolver()->getInstanceFromDefinition('\Drupal\module_manage_article\Controller\FrontEndController');
+//     $tagList = $controller->articleTag();
+//     $variables['tagList'] = $tagList;
+// }
+
+function front_end_preprocess_page(&$variables) {
+    if (\Drupal::service('path.matcher')->isFrontPage()) {
+        $variables['show_slide'] = true;
+    }
+    else {
+        $variables['show_slide'] = false;
+    }
+    $controller = \Drupal::classResolver()->getInstanceFromDefinition('\Drupal\module_manage_article\Controller\FrontEndController');
+    $articleList = [];
+    $slideData = $controller->slide();
+    foreach ($slideData as $slide) {
+        $articleList[] = [
+            'title' => $slide['title'],
+            'url' => '/detail/' . $slide['nid'],
+            'image_url' => $slide['image_url'],
+            'author' =>$slide['author'],
+            'changed' => $slide['changed'],
+            'field_featured' => $slide['field_featured'],
+        ];
+    }
+    $variables['articleList'] = $articleList;
+
+    $tagList = $controller->articleTag();
+    $variables['tagList'] = $tagList;
+}
+
+
+
 
 
 

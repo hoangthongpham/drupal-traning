@@ -23,7 +23,7 @@
                             html += '<div class="blog-post">';
                             if (content[i].image_url) {
                                 html +='<div class="blog-thumb">';
-                                html += '<a href="/'+langCode+'/detail/' + content[i].nid + '"><img src="' + content[i].image_url + '" alt="Image"></a>';
+                                html += '<a class="image_home" href="/'+langCode+'/detail/' + content[i].nid + '"><img src="' + content[i].image_url + '" alt="Image"></a>';
                                 html += '</div>';
                             }
                             html +=    '<div class="down-content">';

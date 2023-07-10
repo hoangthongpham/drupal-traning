@@ -322,3 +322,12 @@ ul.links {
 ul.links li {
 
 }
+
+
+/*slide */
+.owl-item .item img {
+    width: 691.48px;
+    height: 600px;
+    background: #ccc;
+    border: 1px solid;
+}

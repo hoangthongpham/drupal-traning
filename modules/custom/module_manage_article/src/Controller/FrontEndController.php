@@ -151,14 +151,7 @@ class FrontEndController extends ControllerBase {
             return new RedirectResponse('/');
         }
     }
-
-    public function  articleTag(){
-        $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
-        
-        return [
-            '#theme' => 'module_manage_article_tag',
-        ];
-    }
+   
     // function loadSearch(){
     //     $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
     //     return [
@@ -201,44 +194,105 @@ class FrontEndController extends ControllerBase {
         ];
     }
 
-    // function searchPage(Request $request) {
-    //     if(isset($_GET['langcode'])){
-    //         $langCode = $_GET['langcode'];
+    // public function articleTag() {
+    //     $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+    
+    //     $vocabularyName = 'tags';
+    //     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabularyName);
+    
+    //     $tagList = [];
+    //     foreach ($terms as $term) {
+    //         $tid = $term->tid;
+    //         $name = $term->name;
+    //         $tagList[$tid] = $name;
     //     }
-    //     $Mdl = new FrontEndModel();
-    //     $result = $Mdl->search($request);
-    //     $content = [];
-    //     foreach ($result[0] as $node) {
-    //         $name_tag='';
-    //         if($node->get('field_tags')->target_id){
-    //             $termId = $node->get('field_tags')->target_id;
-    //             $term = Term::load($termId);
-    //             if($term){
-    //                 $name_tag = $term->name->value;
-    //             }else{
-    //                 $name_tag='';
-    //             } 
-    //         }
-    //         $translatedNode = $node->getTranslation($langCode);
-    //         $image = $node->get('field_image')->entity;
-    //         $imageUrl = '';
-    //         if ($image instanceof File) {
-    //             $imageUrl = file_create_url($image->getFileUri());
-    //         }
-
-    //         $content[] = [
-    //             'nid' => $node->id(),
-    //             'title' => $translatedNode->getTitle(),
-    //             'body' => $translatedNode->get('body')->value,
-    //             'image_url' => $imageUrl,
-    //             'tag'=>$name_tag
-    //         ];
-    //     }
-    //     return new JsonResponse([
-    //         'content' => $content,
-    //         'pages' => $result[1],
-    //     ]);
+    
+    //     return $tagList;
     // }
+
+    public function articleTag() {
+        $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+        $vocabularyName = 'tags';
+        $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabularyName);
+    
+        $tagList = [];
+        $tagNames = [];
+    
+        foreach ($terms as $term) {
+            $tid = $term->tid;
+            $name = $term->name;
+            
+            if (!in_array($name, $tagNames)) {
+                $tagNames[] = $name;
+                $tagList[$tid] = $name;
+            }
+        }
+    
+        return $tagList;
+    }
+    
+
+    public function articleByTag() {
+        $tag = \Drupal::routeMatch()->getParameter('tag');
+        $query = \Drupal::entityQuery('node')
+            ->condition('type', 'article') 
+            ->condition('status', 1)
+            ->condition('field_tags.entity.name', $tag);
+        $nids = $query->execute();
+        
+        $articles = [];
+        foreach ($nids as $nid) {
+            $node = \Drupal\node\Entity\Node::load($nid);
+            if ($node) {
+                $articles[] = $node;
+            }
+        }
+        return [
+            '#theme' => 'module_manage_article_tag',
+            '#articles' => $articles,
+        ];
+    }
+    
+
+    function slide() {
+        $query = \Drupal::entityQuery('node');
+        $query->condition('type', 'article');
+        $query->condition('field_featured.value', 1);
+        $query->sort('created', 'DESC');
+        $query->range(0, 5);
+        $result = $query->execute();
+        $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($result);
+        $data = [];
+        foreach ($nodes as $node) {
+            $image = $node->get('field_image')->entity;
+            $imageUrl = '';
+            if ($image instanceof File) {
+                $imageUrl = file_create_url($image->getFileUri());
+            }
+    
+            $author = $node->getOwner()->getDisplayName();
+            $changed = $node->getChangedTime();
+            $fieldFeatured = '';
+            if ($node->hasField('field_featured')) {
+                $fieldFeaturedItems = $node->get('field_featured')->getValue();
+                if (!empty($fieldFeaturedItems)) {
+                    $fieldFeatured = $fieldFeaturedItems[0]['value'];
+                }
+            }
+    
+            $data[] = [
+                'nid' => $node->id(),
+                'title' => $node->getTitle(),
+                'image_url' => $imageUrl,
+                'author' => $author,
+                'changed' => $changed,
+                'field_featured'=> $fieldFeatured
+            ];
+        }
+        return $data;
+    }
+    
+    
 }
 
 

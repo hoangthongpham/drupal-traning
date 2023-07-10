@@ -105,9 +105,9 @@ module_manage_article.detailArticle:
     _permission: 'access content'
 
 module_manage_article.tagArticle:
-  path: '/article-tag'
+  path: '/tag-article/{tag}'
   defaults:
-    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::articleTag'
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::articleByTag'
   requirements:
     _permission: 'access content'
 

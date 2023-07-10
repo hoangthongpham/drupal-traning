@@ -57,7 +57,7 @@ class ArticleController extends ControllerBase {
    
     public function deleteArticle()
     {
-        $nid  = \Drupal::routeMatch()->getParameter('id');
+        $nid  = \Drupal::routeMatch()->getParameter('name');
         $node = \Drupal\node\Entity\Node::load($nid);
         if ($node->get('field_image')->target_id) {
             $file = File::load($node->get('field_image')->target_id);

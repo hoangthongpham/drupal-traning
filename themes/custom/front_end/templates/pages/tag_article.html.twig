@@ -1,16 +1,37 @@
-  <h1>xin chao tag article</h1>
-  
-  
-  {# {% block content %}
-    {% if articles %}
-        <h2>{{ articles.getTitle }}</h2>
-        {% if articles.body %}
-          <p>{{ article.body.value|striptags }}</p>
+{% if articles %}
+  {% for article in articles %}
+    <div class="blog-post">
+        {% if article.field_image.entity %}
+        <div class="blog-thumb">
+            <a href="/detail/{{ article.id }}"><img src="{{ file_url(article.field_image.entity.fileuri) }}" alt="Article Image"></a>
+        </div>
         {% endif %}
-        {% if articles.field_image.entity %}
-          <div style="text-align: center;">
-            <img src="{{ file_url(articles.field_image.entity.fileuri) }}" alt="Article Image">
-          </div>
-        {% endif %}
-    {% endif %}
-  {% endblock %} #}
+        <div class="down-content">
+            <h4><a href="/detail/{{ article.id }}">{{ article.getTitle }}</a></h4>
+                <div class="body_content">
+            <p>{{ article.body.value|striptags }}</p>
+        </div>
+        <div class="post-options">
+            <div class="row">
+                <div class="col-6">
+                    <ul class="post-tags">
+                        <li><i class="fa fa-tags"></i></li>
+                        <li><a href="#">Beauty</a>,</li>
+                        <li><a href="#">Nature</a></li>
+                    </ul>
+                    </div>
+                <div class="col-6">
+                    <ul class="post-share">
+                        <li><i class="fa fa-share-alt"></i></li>
+                        <li><a href="#">Facebook</a>,</li>
+                        <li><a href="#"> Twitter</a></li>
+                    </ul>
+                </div>
+                </div>
+            </div>
+        </div>
+    </div>
+  {% endfor %}
+{% else %}
+  <p>No results found.</p>
+{% endif %}

@@ -11,6 +11,7 @@ base theme: false
 
 regions:
   header: Header
+  slider: Slide
   navigation: Navigation
   featured: Featured
   searchable: Searchable

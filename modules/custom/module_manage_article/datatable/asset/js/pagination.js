@@ -25,7 +25,7 @@
                             html += '<div class="blog-post">';
                             if (content[i].image_url) {
                                 html +='<div class="blog-thumb">';
-                                html += '<a href="/'+langCode+'/detail/' + content[i].nid + '"><img src="' + content[i].image_url + '" alt="Image"></a>';
+                                html += '<a class="image_list" href="/'+langCode+'/detail/' + content[i].nid + '"><img style="width:100%" src="' + content[i].image_url + '" alt="Image"></a>';
                                 html += '</div>';
                             }else{
                                 html +='<div class="blog-thumb">';
