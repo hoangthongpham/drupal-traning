@@ -1,0 +1,64 @@
+
+{% if article %}
+<div class="blog-post">
+    {% if article[0][0][0].field_image.entity %}
+    <div class="blog-thumb">
+        <img src="{{ file_url(article[0][0][0].field_image.entity.fileuri) }}" alt="Article Image">
+    </div>
+    {% endif %}
+    <div class="down-content">
+        <h3>{{ article[0][0][0].getTitle }}</h3>
+        <div class="body_content_detail">
+            <p>{{ article[0][0][0].body.value|striptags }}</p>
+        </div>
+        <div class="post-options">
+        <div class="row">
+            <div class="col-6">
+                <ul class="post-tags">
+                    <li><i class="fa fa-tags"></i></li>
+                    <li><a href="/tag-article/{{ article[0][0][1] }}">{{ article[0][0][1] }}</a></li>
+                    <li><a href="#">{{ article[0][0][2] }}</a></li>
+                    <li>
+                        <a href="#">{{ article[0][0][3]|format_date('custom', 'd/m/Y') }}</a>
+                    </li>
+                </ul>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endif %}
+<h2>{{'Related Posts'|t}} </h2>
+<div class="main-banner header-text" style="padding:10px">
+    <div class="container-fluid">
+        <div class="owl-banner owl-carousel" style="padding:0px">
+        {% if article[1] %}
+            {% for post in article[1] %}
+            {% if post[0].field_image.entity %}
+                <div class="item">
+                    <div class="blog-thumb">
+                        <img  src="{{ file_url(post[0].field_image.entity.fileuri) }}" style="width:100%" alt="Article Image">
+                    </div>
+                    {% endif %}
+                    <div class="down-content">
+                        <h3>{{ post[0].getTitle }}</h3>
+                        <div class="post-options">
+                        <div class="row">
+                            <div class="col-6">
+                                <ul class="post-tags">
+                                    <li><i class="fa fa-tags"></i></li>
+                                    <li><a href="#">{{post[1] }}</a></li>
+                                    <li>
+                                        <a href="#">{{ post[2]|format_date('custom', 'd/m/Y') }}</a>
+                                    </li>
+                                </ul>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            {% endfor %}
+        {% endif %}
+        </div>
+    </div>
+</div>

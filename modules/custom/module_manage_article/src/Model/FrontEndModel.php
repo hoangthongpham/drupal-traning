@@ -15,6 +15,7 @@ class FrontEndModel{
         $query = \Drupal::entityQuery('node')
             ->condition('type', 'article')
             ->condition('langcode', $langCode)
+            ->notExists('field_featured')
             ->pager($limit)
             ->sort('changed', 'DESC');
         $offset = $page * $limit;
@@ -64,10 +65,6 @@ class FrontEndModel{
             $nodes,
             $totalPages
         ];
-    }
-
-    public function getArticleByTag(){
-
     }
 
     // public function search(Request $request) {

@@ -10,6 +10,10 @@ namespace Drupal\module_manage_article\Controller;
     use Drupal\taxonomy\Entity\Term;
     use Drupal\Core\Database\Database;
 class FrontEndController extends ControllerBase {
+    public function langCode() {
+        $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+        return $langCode;
+    }
 
     public function loadHome(){
         $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
@@ -49,13 +53,17 @@ class FrontEndController extends ControllerBase {
             if ($image instanceof File) {
                 $imageUrl = file_create_url($image->getFileUri());
             }
+            $author = $node->getOwner()->getDisplayName();
+            $changed = $node->getChangedTime();
 
             $content[] = [
                 'nid' => $node->id(),
                 'title' => $translatedNode->getTitle(),
                 'body' => $translatedNode->get('body')->value,
                 'image_url' => $imageUrl,
-                'tag'=>$name_tag
+                'tag'=>$name_tag,
+                'author' => $author,
+                'changed' => $changed,
             ];
         }
 
@@ -103,13 +111,17 @@ class FrontEndController extends ControllerBase {
             if ($image instanceof File) {
                 $imageUrl = file_create_url($image->getFileUri());
             }
+            $author = $node->getOwner()->getDisplayName();
+            $changed = $node->getChangedTime();
 
             $content[] = [
                 'nid' => $node->id(),
                 'title' => $translatedNode->getTitle(),
                 'body' => $translatedNode->get('body')->value,
                 'image_url' => $imageUrl,
-                'tag'=>$name_tag
+                'tag'=>$name_tag,
+                'author' => $author,
+                'changed' => $changed,
             ];
         }
 
@@ -119,11 +131,19 @@ class FrontEndController extends ControllerBase {
         ]);
     }
 
-
     public function detailArticle() {
         $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-        $nid = \Drupal::routeMatch()->getParameter('id');
-        $node = \Drupal\node\Entity\Node::load($nid);
+        $id = \Drupal::routeMatch()->getParameter('id');
+        $node = \Drupal\node\Entity\Node::load($id);
+        $transNode = $node->getTranslation($langCode);
+        $author = $node->getOwner()->getDisplayName();
+        $changed = $node->getChangedTime();
+        if($node && $node->hasTranslation($langCode)) {
+            $transNode = $node->getTranslation($langCode);
+        }else {
+            \Drupal::messenger()->addStatus(t('Bài viết này không có tiếng việt!'), 'status',TRUE);
+            exit();
+        }
         $name_tag='';
         if($node->get('field_tags')->target_id){
             $termId = $node->get('field_tags')->target_id;
@@ -135,23 +155,46 @@ class FrontEndController extends ControllerBase {
             }
             
         }
-        
-        if ($node && $node->hasTranslation($langCode)) {
-            $translatedNode = $node->getTranslation($langCode);
-    
-            return [
-                '#theme' => 'module_manage_article_detail',
-                '#article' =>[
-                    $translatedNode,
-                    $name_tag
-                ]
+        if($transNode){
+            $data[]=[
+                $transNode,
+                $name_tag,
+                $author,
+                $changed,
             ];
-        } else {
-            \Drupal::messenger()->addError('Node not found');
-            return new RedirectResponse('/');
         }
+        $query = \Drupal::entityQuery('node')
+        ->condition('nid', $id,'<>')
+        ->condition('type', 'article') 
+        ->condition('status', 1)
+        ->condition('langcode', $langCode)
+        ->condition('field_tags.entity.name', $name_tag);
+        $nids = $query->execute();
+        $list = [];
+        foreach ($nids as $nid) {
+            $art = \Drupal\node\Entity\Node::load($nid);
+            $author = $art->getOwner()->getDisplayName();
+            $changed = $art->getChangedTime();
+            if ($art && $art->hasTranslation($langCode)) {
+                $translatedNode = $art->getTranslation($langCode);
+            }
+            if ($translatedNode) {
+                $list[] = [
+                    $translatedNode,
+                    $author,
+                    $changed
+                ];
+            }
+        }
+        return [
+            '#theme' => 'module_manage_article_detail',
+            '#article' =>[
+                $data,
+                $list
+            ]
+        ]; 
     }
-   
+
     // function loadSearch(){
     //     $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
     //     return [
@@ -194,24 +237,7 @@ class FrontEndController extends ControllerBase {
         ];
     }
 
-    // public function articleTag() {
-    //     $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-    
-    //     $vocabularyName = 'tags';
-    //     $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabularyName);
-    
-    //     $tagList = [];
-    //     foreach ($terms as $term) {
-    //         $tid = $term->tid;
-    //         $name = $term->name;
-    //         $tagList[$tid] = $name;
-    //     }
-    
-    //     return $tagList;
-    // }
-
     public function articleTag() {
-        $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
         $vocabularyName = 'tags';
         $terms = \Drupal::entityTypeManager()->getStorage('taxonomy_term')->loadTree($vocabularyName);
     
@@ -227,24 +253,33 @@ class FrontEndController extends ControllerBase {
                 $tagList[$tid] = $name;
             }
         }
-    
         return $tagList;
     }
-    
 
     public function articleByTag() {
+        $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
         $tag = \Drupal::routeMatch()->getParameter('tag');
         $query = \Drupal::entityQuery('node')
             ->condition('type', 'article') 
             ->condition('status', 1)
+            ->condition('langcode', $langCode)
             ->condition('field_tags.entity.name', $tag);
         $nids = $query->execute();
         
         $articles = [];
         foreach ($nids as $nid) {
             $node = \Drupal\node\Entity\Node::load($nid);
-            if ($node) {
-                $articles[] = $node;
+            $author = $node->getOwner()->getDisplayName();
+            $changed = $node->getChangedTime();
+            if ($node && $node->hasTranslation($langCode)) {
+                $translatedNode = $node->getTranslation($langCode);
+            }
+            if ($translatedNode) {
+                $articles[] = [
+                    $translatedNode,
+                    $author,
+                    $changed
+                ];
             }
         }
         return [
@@ -290,9 +325,7 @@ class FrontEndController extends ControllerBase {
             ];
         }
         return $data;
-    }
-    
-    
+    }  
 }
 
 

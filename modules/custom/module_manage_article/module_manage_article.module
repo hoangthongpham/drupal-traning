@@ -21,7 +21,7 @@
                 ],
             ],
             'module_manage_article_detail' => [
-                'template' => 'detail_article',
+                'template' => 'detail-article',
                 'variables' => [
                   'article' => [],
                 ],

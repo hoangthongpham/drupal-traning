@@ -104,6 +104,7 @@ form#search_form {
 
 .blog-posts .down-content h4 a {
     text-decoration: underline !important;
+    font-family: 'Times New Roman', Times, serif;
 }
 /* div#block-front-end-search h2 {
     border-bottom: 1px solid #ccc;
@@ -330,4 +331,10 @@ ul.links li {
     height: 600px;
     background: #ccc;
     border: 1px solid;
+}
+
+
+/*tag*/
+.tag_art.active{
+    background-color:burlywood;
 }

@@ -7,5 +7,21 @@ $(document).ready(function() {
         $(this).parent().addClass("active");
       }
     });
+
+    $('a.tag_art').each(function() {
+      var href = $(this).attr('href');
+      if (href === currentPath) {
+          $(this).addClass('active');
+      }
+    }); 
+
 });
+
+
+
+
+
+
+
+
 

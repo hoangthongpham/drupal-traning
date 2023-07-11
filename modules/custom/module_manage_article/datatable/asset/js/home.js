@@ -15,6 +15,7 @@
                     },
                     success: function (response) {
                         var content = response.content;
+                        console.log(content);
                         totalPages = response.pages;
                         var html = '';
                         for (var i = 0; i < content.length; i++) {
@@ -28,25 +29,21 @@
                             }
                             html +=    '<div class="down-content">';
                             html += '<h4><a href="/'+langCode+'/detail/' + content[i].nid + '">' + content[i].title + '</a></h4>';
+                            html +=       '<ul class="post-info">'
+                            html +=             '<li><a href="#">'+content[i].author+'</a></li>';
+                            html +=             '<li><a href="#">'+formatDate(content[i].changed)+'</a></li>';
+                            // html +=           '<li><a href="#">12 Comments</a></li>';
+                            html +=        '</ul>';
                             html +=        '<div class="body_content">';
                             html +=            '<p>' + truncatedBody + '</p>';
                             html +=        '</div>'
                             html +=        '<div class="post-options">';
                             html +=            '<div class="row">';
-                            html +=           '<div class="col-6">';
-                            html +=                '<ul class="post-tags">';
-                            html +=                '<li><i class="fa fa-tags"></i></li>';
-                            html +=                '<li><a href="#">Beauty</a>,</li>';
-                            html +=                '<li><a href="#">Nature</a></li>';
-                            html +=                '</ul>';
-                            html +=            '</div>';
-                            html +=            '<div class="col-6">';
-                            html +=                '<ul class="post-share">';
-                            html +=                '<li><i class="fa fa-share-alt"></i></li>';
-                            html +=                '<li><a href="#">Facebook</a>,</li>';
-                            html +=                '<li><a href="#"> Twitter</a></li>';
-                            html +=                '</ul>';
-                            html +=            '</div>';
+                            html +=                 '<div class="col-6">';
+                            html +=                     '<ul class="post-tags">';
+                            html +=                            '<li><a href="'+langCode+'/tag-article/'+content[i].tag+'"><i class="fa fa-tags"></i>'+content[i].tag+'</a></li>';
+                            html +=                     '</ul>';
+                            html +=                 '</div>';
                             html +=            '</div>';
                             html +=        '</div>';
                             html +=    '</div>';
@@ -144,5 +141,28 @@
             });
         
             loadContent(page);
+        });
+
+        function formatDate(timestamp) {
+            var date = new Date(timestamp * 1000);
+        
+            var year = date.getFullYear(); 
+            var month = date.getMonth() + 1; 
+            var day = date.getDate(); 
+            var formattedDate = month + '/' + day + '/' + year;
+        
+            return formattedDate;
+        }
+
+        $("#date_from").datepicker({
+            format: "dd/mm/yyyy hh:ii",
+            startDate: "00:00",
+          
+        });
+          
+          $("#date_to").datepicker({
+            format: "dd/mm/yyyy hh:ii",
+            startDate: "00:00", 
+  
         });
 })(jQuery, Drupal, drupalSettings);

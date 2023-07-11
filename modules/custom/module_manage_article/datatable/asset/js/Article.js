@@ -25,7 +25,6 @@
                     data.status = $("#status option:selected").val();
                     data.langcode = $("#langcode option:selected").val();
                     data.changed =[dataFrom,dataTo]  ;
-                    console.log(data.changed);
                 },
             },
             aoColumns: [
@@ -140,7 +139,6 @@
         $(document).on('click', '.delete_item', function(e) {
             e.preventDefault();
             var id = $(this).attr('data-id');
-            
             var modal = $('<div class="modal fade" id="confirmationModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel" aria-hidden="true">');
             var modalDialog = $('<div class="modal-dialog" role="document">');
             var modalContent = $('<div class="modal-content">');
@@ -321,13 +319,13 @@
             format: "dd/mm/yyyy hh:ii",
             startDate: "00:00",
           
-          });
+        });
           
           $("#date_to").datepicker({
             format: "dd/mm/yyyy hh:ii",
             startDate: "00:00", 
   
-          });
+        });
           
     
         $(document).on('change', '#date_from', function (evt) { 

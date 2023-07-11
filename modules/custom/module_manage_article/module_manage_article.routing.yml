@@ -103,7 +103,6 @@ module_manage_article.detailArticle:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::detailArticle'
   requirements:
     _permission: 'access content'
-
 module_manage_article.tagArticle:
   path: '/tag-article/{tag}'
   defaults:
@@ -124,6 +123,14 @@ module_manage_article.search:
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::searchPage'
     _title: 'Search'
+  requirements:
+    _permission: 'access content'
+
+module_manage_article.activeTagDetail:
+  path: '/active-tag'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::activeTagDetail'
+    _title: 'Active'
   requirements:
     _permission: 'access content'
 

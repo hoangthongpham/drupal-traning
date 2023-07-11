@@ -55,27 +55,57 @@ class ArticleController extends ControllerBase {
             
     }
    
-    public function deleteArticle()
-    {
-        $nid  = \Drupal::routeMatch()->getParameter('name');
-        $node = \Drupal\node\Entity\Node::load($nid);
-        if ($node->get('field_image')->target_id) {
-            $file = File::load($node->get('field_image')->target_id);
-            $file->delete();
-        }
-        if ($node) {
-            $node->delete();
-        }
-        // $termId = $node->get('field_tags')->target_id;
-        // if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
-        //     $term->delete();
-        // }
-        \Drupal::messenger()->addStatus($this->t('Article delete successfully!'), 'success', TRUE);
-        return
-            $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
-        $response->send();
+    // public function deleteArticle()
+    // {
+    //     $nid  = \Drupal::routeMatch()->getParameter('id');
+    //     $node = \Drupal\node\Entity\Node::load($nid);
+    //     if ($node->get('field_image')->target_id) {
+    //         $file = File::load($node->get('field_image')->target_id);
+    //         $file->delete();
+    //     }
+    //     if ($node) {
+    //         $node->delete();
+    //     }
+    //     // $termId = $node->get('field_tags')->target_id;
+    //     // if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
+    //     //     $term->delete();
+    //     // }
+    //     \Drupal::messenger()->addStatus($this->t('Article delete successfully!'), 'success', TRUE);
+    //     return
+    //         $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
+    //     $response->send();
 
+    // }
+
+    public function deleteArticle(){
+        $nid = \Drupal::routeMatch()->getParameter('id');
+        $node = \Drupal\node\Entity\Node::load($nid);
+        if ($node) {
+            if ($node->hasField('field_featured')) {
+                $field_featured = $node->get('field_featured')->first();
+                if ($field_featured) {
+                    $field_featured->delete();
+                }
+            }
+
+       
+            if ($node->get('field_image')->target_id) {
+                $file = \Drupal\file\Entity\File::load($node->get('field_image')->target_id);
+                if ($file) {
+                    $file->delete();
+                }
+            }
+            $node->delete();
+
+            \Drupal::messenger()->addStatus($this->t('Article deleted successfully!'), 'success', TRUE);
+            return new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
+        }
+
+        \Drupal::messenger()->addError($this->t('Article not found.'), 'error', TRUE);
+        return new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
     }
+
+
 
     public function showArticle(){
         $nid  = \Drupal::routeMatch()->getParameter('id');

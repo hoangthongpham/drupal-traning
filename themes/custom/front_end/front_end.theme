@@ -1,11 +1,5 @@
 <?php 
 
-// function front_end_preprocess_page(&$variables) {
-//     $controller = \Drupal::classResolver()->getInstanceFromDefinition('\Drupal\module_manage_article\Controller\FrontEndController');
-//     $tagList = $controller->articleTag();
-//     $variables['tagList'] = $tagList;
-// }
-
 function front_end_preprocess_page(&$variables) {
     if (\Drupal::service('path.matcher')->isFrontPage()) {
         $variables['show_slide'] = true;
@@ -30,7 +24,14 @@ function front_end_preprocess_page(&$variables) {
 
     $tagList = $controller->articleTag();
     $variables['tagList'] = $tagList;
+
+    $langCode = $controller->langCode();
+    $variables['langCode'] = $langCode;
 }
+
+
+
+
 
 
 

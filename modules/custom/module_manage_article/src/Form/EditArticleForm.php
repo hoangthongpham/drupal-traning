@@ -131,7 +131,7 @@
                 $term->Save();
             }else {
                 $term = Term::create([
-                    'vid' => 'tags', // Thay 'tags' bằng VID của vocabulary bạn muốn sử dụng.
+                    'vid' => 'tags', 
                     'name' => $postData['field_tags'],
                 ]);
                 $term->save();
@@ -140,6 +140,7 @@
             $node->title = $postData['title'];
             $node->body = $postData['body_value'];
             $node->field_image = $fileId;
+            $node->status=$postData['status'];
             $node->save();
 
 
