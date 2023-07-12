@@ -135,15 +135,6 @@ class FrontEndController extends ControllerBase {
         $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
         $id = \Drupal::routeMatch()->getParameter('id');
         $node = \Drupal\node\Entity\Node::load($id);
-        $transNode = $node->getTranslation($langCode);
-        $author = $node->getOwner()->getDisplayName();
-        $changed = $node->getChangedTime();
-        if($node && $node->hasTranslation($langCode)) {
-            $transNode = $node->getTranslation($langCode);
-        }else {
-            \Drupal::messenger()->addStatus(t('Bài viết này không có tiếng việt!'), 'status',TRUE);
-            exit();
-        }
         $name_tag='';
         if($node->get('field_tags')->target_id){
             $termId = $node->get('field_tags')->target_id;
@@ -155,12 +146,20 @@ class FrontEndController extends ControllerBase {
             }
             
         }
-        if($transNode){
+        if($node && $node->hasTranslation($langCode)) {
+            $transNode = $node->getTranslation($langCode);
+            $author = $node->getOwner()->getDisplayName();
+            $changed = $node->getChangedTime();
             $data[]=[
                 $transNode,
                 $name_tag,
                 $author,
                 $changed,
+            ];
+        }else {
+            return [
+              '#type' => 'markup',
+              '#markup' => $this->t('No results found'),
             ];
         }
         $query = \Drupal::entityQuery('node')
@@ -190,8 +189,14 @@ class FrontEndController extends ControllerBase {
             '#theme' => 'module_manage_article_detail',
             '#article' =>[
                 $data,
-                $list
-            ]
+                $list,
+                $langCode
+            ],
+            '#attached' => [
+                'drupalSettings' => [
+                    'langCode' => $langCode,
+                ],
+            ],
         ]; 
     }
 
@@ -265,7 +270,6 @@ class FrontEndController extends ControllerBase {
             ->condition('langcode', $langCode)
             ->condition('field_tags.entity.name', $tag);
         $nids = $query->execute();
-        
         $articles = [];
         foreach ($nids as $nid) {
             $node = \Drupal\node\Entity\Node::load($nid);
@@ -314,7 +318,6 @@ class FrontEndController extends ControllerBase {
                     $fieldFeatured = $fieldFeaturedItems[0]['value'];
                 }
             }
-    
             $data[] = [
                 'nid' => $node->id(),
                 'title' => $node->getTitle(),

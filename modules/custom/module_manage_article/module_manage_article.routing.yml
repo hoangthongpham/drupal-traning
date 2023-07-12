@@ -126,11 +126,3 @@ module_manage_article.search:
   requirements:
     _permission: 'access content'
 
-module_manage_article.activeTagDetail:
-  path: '/active-tag'
-  defaults:
-    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::activeTagDetail'
-    _title: 'Active'
-  requirements:
-    _permission: 'access content'
-
