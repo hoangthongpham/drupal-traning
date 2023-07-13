@@ -1,4 +1,4 @@
-{# <h2>Search Results</h2> #}
+
 {% if articles %}
   {% for article in articles %}
     <div class="blog-post">
@@ -8,7 +8,7 @@
           </div>
         {% endif %}
         <div class="down-content">
-            <h4><a href='/detail/{{ article.nid }}'>{{ article.title }}</a></h4>
+            <h4><a href='/{{article.langcode}}/detail/{{ article.nid }}'>{{ article.title }}</a></h4>
               <div class="body_content">
             <p>{{ article.body|striptags }}</p>
         </div>
@@ -17,51 +17,19 @@
                 <div class="col-6">
                     <ul class="post-tags">
                         <li><i class="fa fa-tags"></i></li>
-                        <li><a href="#">Beauty</a>,</li>
-                        <li><a href="#">Nature</a></li>
+                        <li><a href="#">{{ article.author }}</a>,</li>
+                        <li><a href="#">{{ article.changed|format_date('custom', 'd/m/Y') }}</a></li>
                     </ul>
                     </div>
-                <div class="col-6">
-                    <ul class="post-share">
-                        <li><i class="fa fa-share-alt"></i></li>
-                        <li><a href="#">Facebook</a>,</li>
-                        <li><a href="#"> Twitter</a></li>
-                    </ul>
-                </div>
                 </div>
             </div>
         </div>
     </div>
   {% endfor %}
 {% else %}
-  <p>No results found.</p>
+  <p>{{ 'No results found'|t }}.</p>
 {% endif %}
 
-
-{# {% if articles %}
-  {% for article in articles %}
-    <h3>{{ article.title }}</h3>
-    <p>{{ article.body|striptags }}</p>
-    {% if article.image_url %}
-      <div class="blog-thumb">
-          <img src="{{ article.image_url }}" alt="Article Image">
-      </div>
-    {% endif %}
-  {% endfor %}
-{% else %}
-  <p>No results found.</p>
-{% endif %} #}
-
-{# {% block content %}
-  <div class="pagination-search-content">
-  </div>
-  <div class="pagination_art_search">
-    <button id="pagination-previous" disabled>{{ 'Previous'|t }}</button>
-    <div id="pagination-numbers">
-    </div>
-    <button id="pagination-next" disabled>{{ 'Next'|t }}</button>
-  </div>
-{% endblock %}  #}
 
 
 

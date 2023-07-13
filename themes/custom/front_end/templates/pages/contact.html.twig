@@ -1,0 +1,14 @@
+
+<h3 style="text-align:center">{{ 'Contact form'|t }}</h3>
+<div class="contact-form">
+    <form action="{{ path('module_manage_article.submitForm') }}" method ="POST">
+        <label for="fname">{{ 'First Name'|t }}</label>
+        <input class="firstname" type="text" id="fname" name="first_name" placeholder="{{ 'Your name..'|t}}" required>
+        <label for="lname">{{ 'Last Name'|t }}</label>
+        <input class="lastname" type="text" id="lname" name="last_name" placeholder="{{ 'Your last name..'|t}}" required>
+        <label for="subject">{{ 'Subject'|t }}</label>
+        <textarea id="subject" name="subject" placeholder="{{'Write something..'|t}}" style="height:200px"></textarea>
+        <input class="submit-contact" type="submit" value="{{ 'Submit'|t }}">
+    </form>
+</div>
+

@@ -15,7 +15,6 @@
                     },
                     success: function (response) {
                         var content = response.content;
-                        console.log(content);
                         totalPages = response.pages;
                         var html = '';
                         for (var i = 0; i < content.length; i++) {

@@ -1,4 +1,7 @@
 /*home */ 
+body {
+    font-family:initial;
+}
 article.contextual-region img {
     width: 300px;
     height: 300px;
@@ -100,6 +103,12 @@ form#search-block-form {
 
 form#search_form {
     display: flex;
+}
+
+#search_form button {
+    background: orange;
+    border: none;
+    border-radius: 5%;
 }
 
 .blog-posts .down-content h4 a {
@@ -332,9 +341,38 @@ ul.links li {
     background: #ccc;
     border: 1px solid;
 }
+.owl-banner .item .item-content h4:hover {
+    color: white;
+}
 
 
 /*tag*/
 .tag_art.active{
     background-color:burlywood;
 }
+
+/*form contact*/
+.firstname, .lastname, #subject {
+    width: 100%;
+    padding: 12px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    box-sizing: border-box;
+    margin-top: 6px;
+    margin-bottom: 16px;
+    resize: vertical;
+  }
+  
+  .contact-form .submit-contact {
+    background-color: #04AA6D;
+    color: white;
+    padding: 12px 20px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+  }
+  
+  
+  .contact-form .submit-contact:hover {
+    background-color: #45a049;
+  }

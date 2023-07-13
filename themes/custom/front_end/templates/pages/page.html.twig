@@ -42,7 +42,7 @@
                                 <a class="nav-link" href="/{{langCode}}/list-article">{{ 'List Article'|t }}</a>
                             </li>
                             <li class="nav-item">
-                                <a class="nav-link" href="/{{langCode}}/contact">{{ 'Contact'|t }}</a>
+                                <a class="nav-link" href="/{{langCode}}/contact-form">{{ 'Contact'|t }}</a>
                             </li>
                         {% endif %}
                     </ul>
@@ -68,7 +68,7 @@
                                 <a href="{{ article.url }}"><h4>{{ article.title }}</h4></a>
                                 <ul class="post-info">
                                     {% if article.field_featured %}
-                                    <li><a href="#">Nổi bật</a></li>
+                                    <li><a href="#">{{'Outstanding'|t}}</a></li>
                                     {% endif %}
                                     <li><a href="#">{{ article.author }}</a></li>
                                     <li>
@@ -93,8 +93,8 @@
                         <div class="main-content">
                             <div class="row">
                                 <div class="col-lg-8">
-                                <span>{{ 'Create Theme with drupal 9'|t }} </span>
-                                <h4></h4>
+                                    <span>{{ 'Create Theme with drupal 9'|t }} </span>
+                                    <h4></h4>
                                 </div>
                                 <div class="col-lg-4">
                                 </div>
@@ -104,6 +104,9 @@
                 </div>
             </div>
         </section>
+        <div class="message-status" style="text-align:center;color:green;font-size:24px">
+            {{ page.featured }}
+        </div>
         <section class="blog-posts">
             <div class="container">
                 <div class="row">
@@ -118,46 +121,46 @@
                     </div>
                     <div class="col-lg-4">
                         <div class="sidebar">
-                        <div class="row">
-                            <div class="col-lg-12">
-                                <div class="sidebar-item search">
-                                    <form id="search_form" name="gs" method="GET" action="/search">
-                                        <input type="text" name="keyword" class="searchText" placeholder="Enter keyword..." autocomplete="on">
-                                        <button type="submit">Search</button>
-                                    </form>
-                                </div>
-                            </div>
-                            <div class="col-lg-12">
-                            <div class="sidebar-item categories">
-                                    {{ page.sidebar_right }}
-                            </div>
-                            </div>
-                            <div class="col-lg-12">
-                            <div class="sidebar-item tags">
-                                <div class="sidebar-heading">
-                                <h2>Tags</h2>
-                                </div>
-                                <div class="content">
+                            <div class="row">
+                                <div class="col-lg-12">
+                                    <div class="sidebar-item search">
                                     {% if langCode %}
-                                            <ul>
-                                        {% if tagList %}
-                                                {% for tid, name in tagList %}
-                                                    <li><a class="tag_art" href="/{{langCode}}/tag-article/{{ name }}" data-id="{{ tid }}">{{ name }}</a></li>
-                                                {% endfor %}
-                                            </ul>
-                                            {% endif %}
+                                        <form id="search_form" name="gs" method="GET" action="/{{ langCode }}/search">
+                                            <input type="text" name="keyword" class="searchText" value="{{ app.request.query.get('keyword') }}" placeholder="{{ 'Enter keyword...'|t }}" autocomplete="on">
+                                            <button type="submit">{{ 'Search'|t }}</button>
+                                        </form>
                                     {% endif %}
+                                    </div>
+                                </div>
+                                <div class="col-lg-12">
+                                <div class="sidebar-item categories">
+                                        {{ page.sidebar_right }}
+                                </div>
+                                </div>
+                                <div class="col-lg-12">
+                                    <div class="sidebar-item tags">
+                                        <div class="sidebar-heading">
+                                        <h2>{{ 'Tags'|t }}</h2>
+                                        </div>
+                                        <div class="content">
+                                            {% if langCode %}
+                                                    <ul>
+                                                {% if tagList %}
+                                                        {% for tid, name in tagList %}
+                                                            <li><a class="tag_art" href="/{{langCode}}/tag-article/{{ name }}" data-id="{{ tid }}">{{ name }}</a></li>
+                                                        {% endfor %}
+                                                    </ul>
+                                                    {% endif %}
+                                            {% endif %}
+                                        </div>
+                                    </div>
                                 </div>
                             </div>
-                            </div>
-                        </div>
                         </div>
                     </div>
                 </div>
             </div>
         </section>
-
-        
         <footer>
         <div class="container">
             <div class="row">

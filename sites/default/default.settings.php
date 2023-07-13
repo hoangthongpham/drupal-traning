@@ -578,8 +578,6 @@ $settings['update_free_access'] = FALSE;
  */
 # $settings['file_temp_path'] = '/tmp';
 
- $settings['file_temp_path'] = '/tmp';
-
 /**
  * Session write interval:
  *

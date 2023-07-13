@@ -110,19 +110,27 @@ module_manage_article.tagArticle:
   requirements:
     _permission: 'access content'
 
-# module_manage_article.loadSearch:
-#   path: '/search'
-#   defaults:
-#     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::loadSearch'
-#     _title: 'Search'
-#   requirements:
-#     _permission: 'access content'
-
 module_manage_article.search:
   path: '/search'
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::searchPage'
     _title: 'Search'
+  requirements:
+    _permission: 'access content'
+
+module_manage_article.contact:
+  path: '/contact-form'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::contactForm'
+    _title: 'Contact'
+  requirements:
+    _permission: 'access content'
+
+module_manage_article.submitForm:
+  path: '/contact-sub-form'
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\FrontEndController::submitContactForm'
+    _title: 'Contact'
   requirements:
     _permission: 'access content'
 

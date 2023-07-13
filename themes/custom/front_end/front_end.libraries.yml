@@ -8,7 +8,7 @@ global-styling:
     public/js/slick.js: {}
     public/js/isotope.js: {}
     public/js/accordions.js: {}
-    public/js/script.js: {}
+    public/js/active.js: {}
   css:
     theme:
       public/vendor/bootstrap/css/bootstrap.min.css: {}

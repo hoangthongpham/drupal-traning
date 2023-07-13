@@ -8,13 +8,15 @@ namespace Drupal\module_manage_article\Controller;
     use Drupal\Core\Controller\ControllerBase;
     use Drupal\file\Entity\File;
     use Drupal\taxonomy\Entity\Term;
-    use Drupal\Core\Database\Database;
+    use Symfony\Component\HttpFoundation\Response;
+    use Drupal\Component\Utility\Html;
+    use PHPMailer\PHPMailer\PHPMailer;
+    use PHPMailer\PHPMailer\Exception;
 class FrontEndController extends ControllerBase {
     public function langCode() {
         $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
         return $langCode;
     }
-
     public function loadHome(){
         $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
         return [
@@ -162,15 +164,10 @@ class FrontEndController extends ControllerBase {
               '#markup' => $this->t('No results found'),
             ];
         }
-        $query = \Drupal::entityQuery('node')
-        ->condition('nid', $id,'<>')
-        ->condition('type', 'article') 
-        ->condition('status', 1)
-        ->condition('langcode', $langCode)
-        ->condition('field_tags.entity.name', $name_tag);
-        $nids = $query->execute();
+        $Mdl = new FrontEndModel();
+        $result = $Mdl->getArticleDetail($id,$langCode,$name_tag);
         $list = [];
-        foreach ($nids as $nid) {
+        foreach ($result as $nid) {
             $art = \Drupal\node\Entity\Node::load($nid);
             $author = $art->getOwner()->getDisplayName();
             $changed = $art->getChangedTime();
@@ -200,26 +197,10 @@ class FrontEndController extends ControllerBase {
         ]; 
     }
 
-    // function loadSearch(){
-    //     $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
-    //     return [
-    //         '#theme' => 'module_manage_article_search',
-    //         '#attached' => [
-    //             'library' => ['module_manage_article/datatable_asset'],
-    //             'drupalSettings' => [
-    //                 'langCode' => $langCode,
-    //             ],
-    //         ],
-    //     ];
-    // }
     function searchPage() {
-        if(isset($_GET['keyword'])){
-            $keyword = $_GET['keyword'];
-        }
-        $query = \Drupal::entityQuery('node');
-        $query->condition('type', 'article');
-        $query->condition('title', '%' . $keyword . '%', 'LIKE');
-        $result = $query->execute();
+        $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
+        $Mdl = new FrontEndModel();
+        $result = $Mdl-> getArticleSearch($langCode);
         $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($result);
         $data = [];
         foreach ($nodes as $node) {
@@ -228,14 +209,28 @@ class FrontEndController extends ControllerBase {
             if ($image instanceof File) {
                 $imageUrl = file_create_url($image->getFileUri());
             }
-
-            $data[] = [
-                'nid' => $node->id(),
-                'title' => $node->getTitle(),
-                'body' => $node->get('body')->value,
-                'image_url' => $imageUrl,
-            ];
+            if($node && $node->hasTranslation($langCode)) {
+                $transNode = $node->getTranslation($langCode);
+                $author = $node->getOwner()->getDisplayName();
+                $changed = $node->getChangedTime();
+                $data[] = [
+                    'nid' => $node->id(),
+                    'title' => $transNode->getTitle(),
+                    'body' => $transNode->get('body')->value,
+                    'image_url' => $imageUrl,
+                    'author' => $author,
+                    'changed' => $changed,
+                    'langcode' => $langCode,
+                    
+                ];
+            }else{
+                return [
+                    '#type' => 'markup',
+                    '#markup' => $this->t('No results found'),
+                  ];
+            } 
         }
+        \Drupal::service('page_cache_kill_switch')->trigger();
         return [
             '#theme' => 'module_manage_article_search',
             '#articles' => $data,
@@ -263,15 +258,10 @@ class FrontEndController extends ControllerBase {
 
     public function articleByTag() {
         $langCode = \Drupal::languageManager()->getCurrentLanguage()->getId();
-        $tag = \Drupal::routeMatch()->getParameter('tag');
-        $query = \Drupal::entityQuery('node')
-            ->condition('type', 'article') 
-            ->condition('status', 1)
-            ->condition('langcode', $langCode)
-            ->condition('field_tags.entity.name', $tag);
-        $nids = $query->execute();
+        $Mdl = new FrontEndModel();
+        $result = $Mdl->getArticleByTag($langCode);
         $articles = [];
-        foreach ($nids as $nid) {
+        foreach ($result as $nid) {
             $node = \Drupal\node\Entity\Node::load($nid);
             $author = $node->getOwner()->getDisplayName();
             $changed = $node->getChangedTime();
@@ -294,12 +284,9 @@ class FrontEndController extends ControllerBase {
     
 
     function slide() {
-        $query = \Drupal::entityQuery('node');
-        $query->condition('type', 'article');
-        $query->condition('field_featured.value', 1);
-        $query->sort('created', 'DESC');
-        $query->range(0, 5);
-        $result = $query->execute();
+        $langCode= \Drupal::languageManager()->getCurrentLanguage()->getId();
+        $Mdl = new FrontEndModel();
+        $result = $Mdl->getArticleSlide($langCode);
         $nodes = \Drupal::entityTypeManager()->getStorage('node')->loadMultiple($result);
         $data = [];
         foreach ($nodes as $node) {
@@ -308,7 +295,9 @@ class FrontEndController extends ControllerBase {
             if ($image instanceof File) {
                 $imageUrl = file_create_url($image->getFileUri());
             }
-    
+            if ($node && $node->hasTranslation($langCode)) {
+                $translatedNode = $node->getTranslation($langCode);
+            }
             $author = $node->getOwner()->getDisplayName();
             $changed = $node->getChangedTime();
             $fieldFeatured = '';
@@ -320,7 +309,7 @@ class FrontEndController extends ControllerBase {
             }
             $data[] = [
                 'nid' => $node->id(),
-                'title' => $node->getTitle(),
+                'title' => $translatedNode->getTitle(),
                 'image_url' => $imageUrl,
                 'author' => $author,
                 'changed' => $changed,
@@ -329,6 +318,46 @@ class FrontEndController extends ControllerBase {
         }
         return $data;
     }  
+
+    public function contactForm(){
+        return [
+            '#theme' => 'module_manage_article_contact',
+        ];
+    }
+
+    public function submitContactForm(){
+        if (isset($_POST['first_name'])) {
+            $firstName = $_POST['first_name'];
+        }
+        if (isset($_POST['last_name'])) {
+            $lastName = $_POST['last_name'];
+        }
+        if (isset($_POST['subject'])) {
+            $subject = $_POST['subject'];
+        }
+        $mail = new PHPMailer(true);
+        $mail->isSMTP();
+        $mail->Host = 'smtp.gmail.com';
+        $mail->SMTPAuth = true;
+        $mail->Username = 'nguongthientieu8196@gmail.com';
+        $mail->Password = 'ppcqsqcwpgdtregu';
+        $mail->SMTPSecure = 'tls';
+        $mail->Port = 587;
+
+        $mail->setFrom('nguongthientieu8196@gmail.com');
+        $mail->addAddress('nguongthientieu8196@gmail.com');
+
+        $mail->Subject = 'hello';
+        $mail->Body = "First Name: " . Html::escape($firstName) . "\nLast Name: " . Html::escape($lastName) . "\nSubject: " . Html::escape($subject);
+        try {
+            $mail->send();
+            $this->messenger()->addMessage($this->t('Form submitted successfully.'));
+        } catch (Exception $e) {
+            $this->messenger()->addError($this->t('An error occurred while sending the form.'));
+        }
+        return $this->redirect('module_manage_article.contact');
+    }
+
 }
 
 

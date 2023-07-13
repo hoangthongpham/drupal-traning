@@ -29,6 +29,8 @@ function front_end_preprocess_page(&$variables) {
     $variables['langCode'] = $langCode;
 }
 
+  
+
 
 
 

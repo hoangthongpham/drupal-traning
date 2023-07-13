@@ -38,6 +38,12 @@
                   'articles' => [],
                 ],
             ],
+            'module_manage_article_contact' => [
+                'template' => 'contact',
+                'variables' => [
+                  'data' => [],
+                ],
+            ],
         );
     }
     function module_manage_article_toolbar(){
