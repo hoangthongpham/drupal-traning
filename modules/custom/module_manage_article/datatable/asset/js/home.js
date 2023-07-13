@@ -1,7 +1,6 @@
 
-(function ($, Drupal, drupalSettings) {
         $(document).ready(function() {
-            var langCode = drupalSettings.langCode;
+            var langCode = $("#lang-code-home").attr("data-lang-code");
             var page = 0; 
             var totalPages = 0; 
             function loadContent(page) {
@@ -140,28 +139,28 @@
             });
         
             loadContent(page);
+
+            function formatDate(timestamp) {
+                var date = new Date(timestamp * 1000);
+            
+                var year = date.getFullYear(); 
+                var month = date.getMonth() + 1; 
+                var day = date.getDate(); 
+                var formattedDate = month + '/' + day + '/' + year;
+            
+                return formattedDate;
+            }
+    
+            $("#date_from").datepicker({
+                format: "dd/mm/yyyy hh:ii",
+                startDate: "00:00",
+              
+            });
+              
+              $("#date_to").datepicker({
+                format: "dd/mm/yyyy hh:ii",
+                startDate: "00:00", 
+      
+            });
         });
 
-        function formatDate(timestamp) {
-            var date = new Date(timestamp * 1000);
-        
-            var year = date.getFullYear(); 
-            var month = date.getMonth() + 1; 
-            var day = date.getDate(); 
-            var formattedDate = month + '/' + day + '/' + year;
-        
-            return formattedDate;
-        }
-
-        $("#date_from").datepicker({
-            format: "dd/mm/yyyy hh:ii",
-            startDate: "00:00",
-          
-        });
-          
-          $("#date_to").datepicker({
-            format: "dd/mm/yyyy hh:ii",
-            startDate: "00:00", 
-  
-        });
-})(jQuery, Drupal, drupalSettings);

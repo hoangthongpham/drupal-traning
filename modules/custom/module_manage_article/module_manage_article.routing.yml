@@ -18,7 +18,7 @@ module_manage_article.add:
   path: "/admin/article/add"
   defaults:
     _form: '\Drupal\module_manage_article\Form\ArticleForm'
-    _title:  "Add Article"
+    _title: "Add Article"
   requirements:
     _permission: "admin user"
 
@@ -64,7 +64,6 @@ module_manage_article.viewArticle:
   requirements:
     _permission: "admin user"
 
-
 # Frontend
 
 module_manage_article.load_home:
@@ -73,14 +72,14 @@ module_manage_article.load_home:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::loadHome'
     _title: "Home"
   requirements:
-    _permission: "user"
+    _permission: "access content"
 
 module_manage_article.home_data:
-  path: '/home-data'
+  path: "/home-data"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::homeData'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 module_manage_article.loadArticle:
   path: "/list-article"
@@ -91,46 +90,45 @@ module_manage_article.loadArticle:
     _permission: "access content"
 
 module_manage_article.list_article:
-  path: '/list-art'
+  path: "/list-art"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::listArticles'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 module_manage_article.detailArticle:
-  path: '/detail/{id}'
+  path: "/detail/{id}"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::detailArticle'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 module_manage_article.tagArticle:
-  path: '/tag-article/{tag}'
+  path: "/tag-article/{tag}"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::articleByTag'
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 module_manage_article.search:
-  path: '/search'
+  path: "/search"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::searchPage'
-    _title: 'Search'
+    _title: "Search"
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 module_manage_article.contact:
-  path: '/contact-form'
+  path: "/contact-form"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::contactForm'
-    _title: 'Contact'
+    _title: "Contact"
   requirements:
-    _permission: 'access content'
+    _permission: "access content"
 
 module_manage_article.submitForm:
-  path: '/contact-sub-form'
+  path: "/contact-sub-form"
   defaults:
     _controller: '\Drupal\module_manage_article\Controller\FrontEndController::submitContactForm'
-    _title: 'Contact'
+    _title: "Contact"
   requirements:
-    _permission: 'access content'
-
+    _permission: "access content"

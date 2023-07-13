@@ -22,10 +22,10 @@ class FrontEndController extends ControllerBase {
         return [
             '#theme' => 'module_manage_article_home',
             '#attached' => [
-                'library' => ['module_manage_article/datatable_asset'],
-                'drupalSettings' => [
-                    'langCode' => $langCode,
-                ],
+                'library' => ['module_manage_article/datatable_asset']
+            ],
+            '#articles' => [
+                'langCode' => $langCode,
             ],
         ];
     }
@@ -84,6 +84,9 @@ class FrontEndController extends ControllerBase {
                 'drupalSettings' => [
                     'langCode' => $langCode,
                 ],
+            ],
+            '#articles' => [
+                'langCode' => $langCode,
             ],
         ];
     }

@@ -1,8 +1,6 @@
-(function ($, Drupal, drupalSettings) {
-    // Drupal.behaviors.customPagination = {
+
         $(document).ready(function() {
-        // attach: function (context, settings) {
-            var langCode = drupalSettings.langCode;
+            var langCode = $("#lang-code-list").attr("data-lang-code");
             var page = 0; 
             var totalPages = 0;
             function loadContent(page) {
@@ -181,4 +179,4 @@
         startDate: "00:00", 
 
     });
-})(jQuery, Drupal, drupalSettings);
+

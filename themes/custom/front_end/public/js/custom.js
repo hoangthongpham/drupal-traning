@@ -60,7 +60,7 @@ jQuery( document ).ready(function( $ ) {
 
         if ($('.owl-banner').length) {
             $('.owl-banner').owlCarousel({
-                loop: true,
+                loop: false,
                 nav: true,
                 dots: true,
                 items: 3,

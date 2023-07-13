@@ -1,4 +1,4 @@
-
+<div id="lang-code-table" data-lang-code="{{ data[1] }}"></div>
 <div class="link_add">
     <a id="add_article" href="/admin/article/add">{{ 'Add article'|t }} </a>
 </div>
@@ -12,7 +12,7 @@
     <div id="filter_language" class="filter_language">
         <label>{{ 'Language'|t }}</label>
         <select class="form-select form-select-md item-search" name="langcode" id="langcode">
-            {% for code, language in data %}
+            {% for code, language in data[0] %}
                 <option value="{{ code }}">{{ language.getName()|t }}</option>
             {% endfor %}
         </select>

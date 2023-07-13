@@ -1,7 +1,6 @@
 
-(function ($, Drupal, drupalSettings) {
     $(document).ready(function() {
-        var langCode = drupalSettings.langCode;
+        var langCode = $("#lang-code-table").attr("data-lang-code");
         if(langCode=='vi'){
             url_data= '//cdn.datatables.net/plug-ins/1.13.4/i18n/vi.json'
         }else{
@@ -339,7 +338,5 @@
         });
     });
 
-
-})(jQuery, Drupal, drupalSettings);
 
   

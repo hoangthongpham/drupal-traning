@@ -21,12 +21,12 @@ class ArticleController extends ControllerBase {
         $languages = \Drupal::languageManager()->getLanguages();
         return [
             '#theme' => 'module_manage_article',
-            '#data' => $languages,
+            '#data' => [
+                $languages,
+                $langCode
+            ],
             '#attached' => [
                'library' => ['module_manage_article/datatable_asset'],
-               'drupalSettings' => [
-                    'langCode' => $langCode,
-                ],
             ],
         ];
     }
@@ -55,28 +55,6 @@ class ArticleController extends ControllerBase {
             
     }
    
-    // public function deleteArticle()
-    // {
-    //     $nid  = \Drupal::routeMatch()->getParameter('id');
-    //     $node = \Drupal\node\Entity\Node::load($nid);
-    //     if ($node->get('field_image')->target_id) {
-    //         $file = File::load($node->get('field_image')->target_id);
-    //         $file->delete();
-    //     }
-    //     if ($node) {
-    //         $node->delete();
-    //     }
-    //     // $termId = $node->get('field_tags')->target_id;
-    //     // if ($term = \Drupal\taxonomy\Entity\Term::load($termId)) {
-    //     //     $term->delete();
-    //     // }
-    //     \Drupal::messenger()->addStatus($this->t('Article delete successfully!'), 'success', TRUE);
-    //     return
-    //         $response = new \Symfony\Component\HttpFoundation\RedirectResponse('/admin/articles');
-    //     $response->send();
-
-    // }
-
     public function deleteArticle(){
         $nid = \Drupal::routeMatch()->getParameter('id');
         $node = \Drupal\node\Entity\Node::load($nid);
