@@ -132,3 +132,21 @@ module_manage_article.submitForm:
     _title: "Contact"
   requirements:
     _permission: "access content"
+
+module_manage_article.loadForm:
+  path: "/form"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\CreditCardReEntry::index'
+    _title: "credit card"
+  requirements:
+    _permission: "access content"
+
+module_manage_article.loadOrder:
+  path: "/form/data"
+  defaults:
+    _controller: '\Drupal\module_manage_article\Controller\CreditCardReEntry::loadOrderDataAjax'
+    _title: "credit card a"
+  requirements:
+    _permission: "access content"
+
+

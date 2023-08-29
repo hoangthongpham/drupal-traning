@@ -230,7 +230,7 @@ class FrontEndController extends ControllerBase {
                 return [
                     '#type' => 'markup',
                     '#markup' => $this->t('No results found'),
-                  ];
+                ];
             } 
         }
         \Drupal::service('page_cache_kill_switch')->trigger();

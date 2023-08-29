@@ -8,10 +8,10 @@ datatable_asset:
       datatable/asset/js/jquery.validate.min.js: {}
       datatable/asset/js/jquery.dataTables.min.js: {}
       datatable/asset/js/jquery-ui.js: {}
-      datatable/asset/js/article.js: {}
-      datatable/asset/js/home.js: {}
-      datatable/asset/js/list-article.js: {}
-      # datatable/asset/js/search.js: {}
+      # datatable/asset/js/article.js: {}
+      # datatable/asset/js/home.js: {}
+      # datatable/asset/js/list-article.js: {}
+      datatable/asset/js/credit-card.js: {}s
 
   css:
     theme:

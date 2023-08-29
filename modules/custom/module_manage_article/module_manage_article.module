@@ -44,6 +44,13 @@
                   'data' => [],
                 ],
             ],
+
+            'credit_cart_re_entry' => array(
+                'template' => 'test_table/credit_card',
+                'variables' => array(
+                    'data' => [],
+                ),
+            ),
         );
     }
     function module_manage_article_toolbar(){
